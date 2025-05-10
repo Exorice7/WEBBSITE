@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const initPage = () => {
       // Анимация прелоадера
       const preloader = document.querySelector('.preloader');
-      const preloaderText = document.querySelector('.preloader-text span');
+      const preloaderQuote = document.querySelector('.preloader-quote');
       const preloaderBar = document.querySelector('.preloader-bar');
       
       // Сначала показываем текст и прогресс-бар
@@ -34,8 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       
       preloaderTimeline
-        .to(preloaderText, {
-          y: 0,
+        .to(preloaderQuote, {
+          opacity: 1,
           duration: 1,
           ease: "power3.out"
         })
@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Инициализация всех анимаций
     const initAnimations = () => {
       // Инициализируем компоненты UI
-      UI.initCursor();
       UI.initScrollProgress();
       UI.initMobileMenu();
       UI.initContactForm();
@@ -214,18 +213,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       
-      // Анимация цитаты
-      gsap.from('.quote-block', {
-        x: -50,
-        opacity: 0,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.quote-block',
-          start: 'top 85%'
-        }
-      });
-      
       // Анимация полей формы
       gsap.utils.toArray('.form-group').forEach((group, i) => {
         gsap.from(group, {
@@ -281,104 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================
     // КОМПОНЕНТЫ ИНТЕРФЕЙСА
     // =========================
-    
-    // Кастомный курсор
-    UI.initCursor = () => {
-      const cursor = document.querySelector('.cursor');
-      const cursorDot = document.querySelector('.cursor-dot');
-      const cursorCircle = document.querySelector('.cursor-circle');
-      const cursorText = document.querySelector('.cursor-text');
-      
-      // Проверяем, на мобильном ли устройстве пользователь
-      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-        document.querySelector('.cursor-container').style.display = 'none';
-        return;
-      }
-      
-      // Обновляем позицию курсора
-      const updateCursorPosition = (e) => {
-        gsap.to(cursor, {
-          x: e.clientX,
-          y: e.clientY,
-          duration: 0,
-          overwrite: true
-        });
-      };
-      
-      // Плавное следование за курсором
-      const updateCursorFollower = () => {
-        const xTo = gsap.getProperty(cursor, "x");
-        const yTo = gsap.getProperty(cursor, "y");
-        
-        gsap.to(cursorCircle, {
-          x: xTo,
-          y: yTo,
-          duration: 0.3,
-          overwrite: true
-        });
-        
-        gsap.to(cursorText, {
-          x: xTo,
-          y: yTo,
-          duration: 0.3,
-          overwrite: true
-        });
-        
-        requestAnimationFrame(updateCursorFollower);
-      };
-      
-      // Эффекты при наведении
-      const setupCursorInteractions = () => {
-        // Элементы с hover-эффектом
-        document.querySelectorAll('[data-cursor="hover"]').forEach(el => {
-          el.addEventListener('mouseenter', () => {
-            cursorDot.classList.add('hover');
-            cursorCircle.classList.add('hover');
-          });
-          
-          el.addEventListener('mouseleave', () => {
-            cursorDot.classList.remove('hover');
-            cursorCircle.classList.remove('hover');
-          });
-        });
-        
-        // Элементы с текстом в курсоре
-        document.querySelectorAll('[data-cursor-text]').forEach(el => {
-          el.addEventListener('mouseenter', () => {
-            const text = el.getAttribute('data-cursor-text');
-            cursorText.innerHTML = text;
-            cursorText.classList.add('visible');
-            cursorCircle.classList.add('text-visible');
-          });
-          
-          el.addEventListener('mouseleave', () => {
-            cursorText.classList.remove('visible');
-            cursorCircle.classList.remove('text-visible');
-          });
-        });
-        
-        // Элементы с view-эффектом
-        document.querySelectorAll('[data-cursor="view"]').forEach(el => {
-          el.addEventListener('mouseenter', () => {
-            cursorDot.classList.add('view');
-            cursorCircle.classList.add('view');
-            cursorText.innerHTML = 'Просмотр';
-            cursorText.classList.add('visible');
-          });
-          
-          el.addEventListener('mouseleave', () => {
-            cursorDot.classList.remove('view');
-            cursorCircle.classList.remove('view');
-            cursorText.classList.remove('visible');
-          });
-        });
-      };
-      
-      // Запускаем систему курсора
-      document.addEventListener('mousemove', updateCursorPosition);
-      updateCursorFollower();
-      setupCursorInteractions();
-    };
     
     // Индикатор прогресса скролла
     UI.initScrollProgress = () => {
