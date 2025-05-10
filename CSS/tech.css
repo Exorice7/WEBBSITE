@@ -1,0 +1,173 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+header {
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+header .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #007bff;
+    padding: 5px 0;
+}
+
+header nav ul li a:hover,
+header nav ul li a.active {
+    border-bottom: 2px solid #007bff;
+    color: #0056b3;
+}
+
+.burger-menu {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.burger-menu span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 5px 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    header nav {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        z-index: 1000;
+    }
+
+    header nav.active {
+        display: block;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    header nav ul li {
+        width: 100%;
+        text-align: center;
+    }
+
+     header nav ul li a {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    header nav ul li a:hover,
+    header nav ul li a.active {
+        border-bottom: 1px solid #eee;
+        background-color: #e9ecef;
+    }
+
+    .burger-menu {
+        display: block;
+    }
+}
+
+.tech-content h1 {
+    text-align: center;
+    font-size: 2.5em;
+    margin-bottom: 40px;
+    color: #17a2b8;
+}
+
+.tech-section {
+    margin-bottom: 50px;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.07);
+}
+
+.tech-section h2 {
+    font-size: 2em;
+    color: #17a2b8;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.tech-section p {
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.tech-gallery-placeholder,
+.seed-line-placeholder,
+.melioration-placeholder,
+.precision-placeholder,
+.almond-tech-placeholder {
+    height: 250px;
+    background-color: #e9ecef;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+    font-style: italic;
+}
+.tech-gallery-placeholder::before { content: 'Фото/видео Технопарка'; }
+.seed-line-placeholder::before { content: 'Фото Линии Подработки Семян'; }
+.melioration-placeholder::before { content: 'Фото Проекта Мелиорации'; }
+.precision-placeholder::before { content: 'Иллюстрация Точного Земледелия'; }
+.almond-tech-placeholder::before { content: 'Фото/Видео Проекта Миндаль'; }

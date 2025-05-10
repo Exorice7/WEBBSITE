@@ -1,0 +1,500 @@
+/* WEBSITE/CSS/about.css */
+
+/* Define CSS variables for consistent theming */
+:root {
+    --primary-color-start: #4f46e5; /* Indigo 600 */
+    --primary-color-end: #a855f7;   /* Purple 500 */
+    --secondary-color: #111827; /* Gray 900 */
+    --text-color: #d1d5db;      /* Gray 300 */
+    --text-color-dark: #9ca3af; /* Gray 400 */
+    --border-color: #374151;    /* Gray 700 */
+    --gradient-text: linear-gradient(to right, var(--primary-color-start), var(--primary-color-end));
+    --font-primary: 'Inter', sans-serif;
+}
+
+/* Apply base styles */
+body {
+    font-family: var(--font-primary);
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* WebGL Canvas Styling */
+#webgl-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh; /* Use viewport height */
+    z-index: -1; /* Place it behind content */
+    overflow: hidden; /* Ensure canvas doesn't cause scroll */
+}
+
+#canvas {
+    display: block; /* Remove extra space below canvas */
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Cover the container */
+}
+
+
+/* Preloader Styles */
+.preloader {
+    opacity: 1;
+    visibility: visible;
+    /* Add transition for fade-out effect in JS */
+}
+
+.preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none; /* Disable interaction when hidden */
+}
+
+.spinner {
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-left-color: var(--primary-color-start);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Header Styles */
+#main-header {
+    background-color: rgba(17, 24, 39, 0.8); /* bg-gray-900 with opacity */
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+}
+
+#main-header.scrolled {
+     background-color: rgba(17, 24, 39, 0.95); /* Darker background on scroll */
+     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.nav-link {
+    display: block;
+    padding: 0.75rem 0; /* Vertical padding for mobile */
+    color: var(--text-color-dark);
+    transition: color 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: white;
+    border-bottom-color: var(--primary-color-start);
+}
+
+@media (min-width: 768px) { /* md breakpoint */
+    .nav-link {
+        padding: 0.5rem 0; /* Adjust padding for desktop */
+    }
+     #mobile-nav {
+        display: flex !important; /* Override hidden */
+    }
+}
+
+/* Burger menu icon styling (optional, if not using SVG directly) */
+.burger-menu span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-color);
+    margin: 5px 0;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Mobile Nav Transition */
+#mobile-nav {
+    transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    background-color: rgba(31, 41, 55, 0.95); /* bg-gray-800 slightly transparent */
+    position: absolute;
+    top: 100%; /* Position below header */
+    left: 0;
+    right: 0;
+    padding: 1rem 0; /* Padding when open */
+    border-bottom: 1px solid var(--border-color);
+}
+
+#mobile-nav.open {
+    max-height: 500px; /* Adjust as needed */
+    opacity: 1;
+    padding: 1rem 0;
+}
+
+@media (min-width: 768px) {
+    #mobile-nav {
+        position: static;
+        background-color: transparent;
+        max-height: none;
+        opacity: 1;
+        overflow: visible;
+        padding: 0;
+        border-bottom: none;
+    }
+    #mobile-nav ul {
+        align-items: center;
+    }
+}
+
+
+/* General Section Styling */
+.section-padding {
+    padding-top: 4rem; /* 64px */
+    padding-bottom: 4rem; /* 64px */
+}
+@media (min-width: 768px) { /* md */
+    .section-padding {
+        padding-top: 6rem; /* 96px */
+        padding-bottom: 6rem; /* 96px */
+    }
+}
+@media (min-width: 1024px) { /* lg */
+    .section-padding {
+        padding-top: 8rem; /* 128px */
+        padding-bottom: 8rem; /* 128px */
+    }
+}
+
+.section-title {
+    font-weight: 800; /* Extra bold */
+    color: white;
+    line-height: 1.2;
+}
+
+.section-subtitle {
+    color: var(--text-color-dark);
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: var(--gradient-text);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Gradient Background */
+.gradient-bg {
+    background: var(--gradient-text);
+}
+
+/* Leader Section Specific Styles */
+.leader-image-wrapper {
+    border: 1px solid var(--border-color);
+}
+
+.leader-list-item {
+    gap: 0.75rem; /* space-x-3 */
+    color: var(--text-color);
+}
+
+.leader-list-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: white;
+    margin-right: 0.5rem; /* Add space between icon and text */
+}
+
+.quote-section {
+    /* Styles already applied via Tailwind, added background/border */
+}
+
+/* Mission & Values Section */
+.mission-values-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mission-values-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.value-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* space-x-2 */
+}
+
+.value-icon {
+    color: var(--primary-color-start);
+    font-weight: bold;
+    margin-right: 0.25rem;
+}
+
+/* Infrastructure Section */
+.infra-card {
+    background-color: rgba(31, 41, 55, 0.5); /* bg-gray-800 with transparency */
+    backdrop-filter: blur(5px);
+    padding: 2rem;
+    border-radius: 0.75rem; /* rounded-xl */
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.infra-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    border-color: var(--primary-color-start);
+}
+
+.infra-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gradient-text);
+    color: white;
+    box-shadow: 0 4px 10px rgba(79, 70, 229, 0.4); /* Shadow matching gradient */
+}
+
+/* Infographic Styles */
+.infographic-container {
+    position: relative;
+}
+
+.gradient-border {
+    border: 2px solid transparent;
+    background-clip: padding-box; /* Important for border gradient */
+    position: relative;
+}
+
+.gradient-border::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    z-index: -1;
+    margin: -2px; /* Adjust based on border width */
+    border-radius: inherit; /* Match parent's border radius */
+    background: var(--gradient-text);
+}
+
+
+.infographic-visual {
+    width: 120px; /* Adjust size as needed */
+    height: 120px;
+    position: relative; /* For absolute positioning of the value */
+}
+
+.infographic-circle-bg,
+.infographic-circle-progress {
+    fill: none;
+    stroke-width: 8; /* Adjust stroke width */
+}
+
+.infographic-circle-bg {
+    stroke: var(--border-color); /* Background circle color */
+}
+
+.infographic-circle-progress {
+    stroke: url(#progressGradient); /* Apply gradient */
+    stroke-linecap: round;
+    transform: rotate(-90deg); /* Start from top */
+    transform-origin: 50% 50%;
+    stroke-dasharray: 283; /* Circumference (2 * pi * 45) */
+    stroke-dashoffset: 283; /* Start fully dashed */
+    transition: stroke-dashoffset 1.5s ease-out; /* Animation */
+}
+
+/* Timeline Styles */
+.timeline {
+    position: relative;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--gradient-text);
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+.timeline-item {
+    position: relative;
+    width: 50%;
+    padding: 0 40px; /* Space from center line */
+    box-sizing: border-box;
+}
+
+.timeline-item::after { /* The circle dot on the timeline */
+    content: '';
+    position: absolute;
+    top: 20px; /* Adjust vertical position */
+    width: 16px;
+    height: 16px;
+    background-color: var(--secondary-color);
+    border: 3px solid var(--primary-color-start);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.timeline-left {
+    left: 0;
+    padding-right: 30px; /* Spacing from line */
+}
+
+.timeline-right {
+    left: 50%;
+    padding-left: 30px; /* Spacing from line */
+}
+
+.timeline-left::after {
+    right: -8px; /* Position dot on the line */
+}
+
+.timeline-right::after {
+    left: -8px; /* Position dot on the line */
+}
+
+.timeline-content {
+    position: relative;
+    /* Background and padding are set via Tailwind */
+}
+
+/* Timeline Arrow */
+.timeline-arrow {
+    content: '';
+    position: absolute;
+    top: 22px; /* Align with the dot */
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.timeline-left .timeline-arrow {
+    right: -10px; /* Pointing right */
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent var(--border-color); /* Match card border */
+}
+/* Add slight adjustment if using backdrop blur */
+.timeline-left .timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    right: -11px; /* Slightly behind the arrow */
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 0 10px 10px;
+    border-color: transparent transparent transparent rgba(31, 41, 55, 0.6); /* Match card bg */
+    filter: blur(1px); /* Optional blur */
+}
+
+
+.timeline-right .timeline-arrow {
+    left: -10px; /* Pointing left */
+    border-width: 10px 10px 10px 0;
+    border-color: transparent var(--border-color) transparent transparent; /* Match card border */
+}
+
+.timeline-right .timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: -11px; /* Slightly behind the arrow */
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent rgba(31, 41, 55, 0.6) transparent transparent; /* Match card bg */
+    filter: blur(1px); /* Optional blur */
+}
+
+
+.timeline-year {
+    font-weight: 600;
+}
+
+/* Responsive Timeline */
+@media screen and (max-width: 768px) {
+    .timeline-line {
+        left: 20px; /* Move line to the left */
+        transform: translateX(0);
+    }
+
+    .timeline-item {
+        width: 100%;
+        padding-left: 50px; /* Space for content */
+        padding-right: 15px;
+        left: 0 !important; /* Override inline style */
+        margin-bottom: 3rem !important; /* Ensure spacing */
+    }
+
+    .timeline-item::after {
+        left: 12px; /* Position dot on the left line */
+    }
+
+    .timeline-arrow {
+        left: -10px !important; /* Pointing left */
+        border-width: 10px 10px 10px 0 !important;
+        border-color: transparent var(--border-color) transparent transparent !important;
+    }
+     .timeline-content::before {
+        left: -11px !important; /* Pointing left */
+        border-width: 10px 10px 10px 0 !important;
+        border-color: transparent rgba(31, 41, 55, 0.6) transparent transparent !important;
+    }
+
+    .timeline-left .timeline-arrow,
+    .timeline-right .timeline-arrow {
+        /* Reset right styles */
+        right: auto;
+    }
+     .timeline-left .timeline-content::before,
+    .timeline-right .timeline-content::before {
+        /* Reset right styles */
+        right: auto;
+    }
+}
+
+
+/* Footer Styles */
+.main-footer {
+    /* Background and padding set via Tailwind */
+}
+
+.footer-social-links a {
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-social-links a:hover {
+    transform: scale(1.1);
+}
+
+/* AOS Animation adjustments (optional) */
+[data-aos] {
+    /* Example: make fade-up less aggressive */
+    /* transition-property: transform, opacity; */
+}
+
+[data-aos="fade-up"] {
+    /* transform: translateY(50px); */
+}
+
+/* Utility class for smooth shadow (example) */
+.smooth-shadow {
+     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}

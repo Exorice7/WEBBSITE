@@ -1,0 +1,72 @@
+:root {
+  --primary-color: #0a0a0a;
+  --text-color: #f0f0f0;
+  --accent-color: #5d33fb;
+  --font-main: 'Space Grotesk', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+}
+
+.marquee-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Marquee text effect */
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 2rem 0;
+}
+
+.marquee {
+  display: flex;
+  white-space: nowrap;
+  animation: marquee 20s linear infinite;
+}
+
+.marquee span {
+  font-size: clamp(2rem, 10vw, 8rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-right: 30px;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(240, 240, 240, 0.3);
+  transition: all 0.3s ease;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 768px) {
+  .marquee span {
+    font-size: clamp(1.5rem, 8vw, 6rem);
+    margin-right: 20px;
+  }
+}

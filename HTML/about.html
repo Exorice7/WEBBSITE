@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ИП Прытков М.А. - О Нас (Современный Дизайн)</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/about.css">
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.164.1/build/three.module.js"
+        }
+      }
+    </script>
+
+</head>
+<body class="antialiased bg-gray-900 text-gray-200 font-inter">
+
+    <div class="preloader fixed inset-0 bg-gray-950 z-[100] flex flex-col items-center justify-center transition-opacity duration-500 ease-out">
+        <div class="spinner mb-4"></div>
+        <div class="text-gray-400 text-sm tracking-widest uppercase">Загрузка...</div>
+    </div>
+
+    <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out" data-aos="fade-down" data-aos-duration="600">
+        <div class="container mx-auto px-4 h-auto md:h-20 flex flex-wrap md:flex-nowrap justify-between items-center">
+
+            <div class="logo text-lg md:text-xl font-bold text-white py-3 md:py-0 whitespace-nowrap">
+                ИП Прытков М.А.
+            </div>
+
+            <button id="burger-menu" class="burger-menu md:hidden text-gray-300 hover:text-white focus:outline-none py-3" aria-label="Toggle navigation" aria-expanded="false">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+
+            <nav id="mobile-nav" class="w-full md:w-auto hidden md:block mt-4 md:mt-0">
+                <ul class="flex flex-col md:flex-row md:space-x-6 lg:space-x-8 items-center text-sm md:text-base">
+                    <li><a href="index.html" class="nav-link">Главная</a></li>
+                    <li><a href="about.html" class="nav-link active">О нас</a></li>
+                    <li><a href="products.html" class="nav-link">Продукция</a></li>
+                    <li><a href="services.html" class="nav-link">Услуги</a></li>
+                    <li><a href="tech.html" class="nav-link">Технологии</a></li>
+                    <li><a href="partners.html" class="nav-link">Партнерство</a></li>
+                    <li><a href="contact.html" class="nav-link">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div id="webgl-container" class="fixed top-0 left-0 w-full h-screen z-[-1]">
+        <canvas id="canvas"></canvas>
+        </div>
+
+    <main class="pt-20 md:pt-24 relative z-10">
+        <div id="content-sections">
+
+            <section id="content-about" class="content-section section-padding overflow-hidden" data-aos="fade-up">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl section-title text-center mb-16 md:mb-24">Руководитель: <span class="gradient-text">Михаил Прытков</span></h2>
+                    <div class="flex flex-col lg:flex-row items-center lg:items-start gap-12 md:gap-16 lg:gap-24">
+                        <div class="w-full lg:w-2/5 flex-shrink-0" data-aos="zoom-in-right" data-aos-delay="100" data-aos-duration="700">
+                            <div class="relative rounded-lg overflow-hidden shadow-2xl leader-image-wrapper transform transition-transform duration-500 hover:scale-[1.03]">
+                                <div class="aspect-w-1 aspect-h-1 md:aspect-w-4 md:aspect-h-5">
+                                    <img src="https://placehold.co/500x625/1f2937/e5e7eb?text=Фото+М.+Прыткова"
+                                         alt="[Фото Михаила Прыткова]"
+                                         onerror="this.onerror=null; this.src='https://placehold.co/500x625/991b1b/fecaca?text=Ошибка+загрузки';"
+                                         class="object-cover w-full h-full">
+                                </div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                            </div>
+                        </div>
+                        <div class="w-full lg:w-3/5 text-center lg:text-left">
+                            <h3 class="text-2xl md:text-3xl font-semibold mb-8 text-white" data-aos="fade-left" data-aos-delay="200">Ключевые Достижения</h3>
+                            <ul class="space-y-4 text-lg mb-12 list-none">
+                                <li data-aos="fade-left" data-aos-delay="250" class="leader-list-item flex items-center justify-center lg:justify-start">
+                                    <span class="leader-list-icon gradient-bg flex-shrink-0">✓</span>
+                                    <span>Заслуженный работник сельского хозяйства КБР</span>
+                                </li>
+                                <li data-aos="fade-left" data-aos-delay="300" class="leader-list-item flex items-center justify-center lg:justify-start">
+                                    <span class="leader-list-icon gradient-bg flex-shrink-0">✓</span>
+                                    <span>Более 20 лет успешного опыта в агробизнесе</span>
+                                </li>
+                                <li data-aos="fade-left" data-aos-delay="350" class="leader-list-item flex items-center justify-center lg:justify-start">
+                                    <span class="leader-list-icon gradient-bg flex-shrink-0">✓</span>
+                                    <span>Высшее образование (экономист-менеджер, СевКавГТУ, 2011)</span>
+                                </li>
+                                <li data-aos="fade-left" data-aos-delay="400" class="leader-list-item flex items-center justify-center lg:justify-start">
+                                    <span class="leader-list-icon gradient-bg flex-shrink-0">✓</span>
+                                    <span>Депутат Парламента КБР (с 2015), активное участие в комитетах</span>
+                                </li>
+                            </ul>
+
+                            <div class="quote-section mb-12 p-6 rounded-lg bg-gray-800/50 backdrop-blur-sm shadow-lg border border-gray-700/50" data-aos="fade-up" data-aos-delay="450">
+                                <h3 class="text-xl md:text-2xl font-semibold mb-5 text-white">Философия Успеха</h3>
+                                <div class="space-y-3 text-lg text-gray-300 italic">
+                                    <p>"Основательный подход с обязательным прицелом на перспективу."</p>
+                                    <p>"Решение реальных проблем сектора: переработка, хранение, реализация."</p>
+                                    <p>"Преуспеет тот, у кого меньше конкурентов и кто научился выгодно продавать."</p>
+                                </div>
+                            </div>
+
+                            <div data-aos="fade-up" data-aos-delay="500">
+                                <h3 class="text-xl md:text-2xl font-semibold mb-4 text-white">Общественная Деятельность</h3>
+                                <p class="text-lg leading-relaxed text-gray-300">Активное участие в работе Аграрного и Экономического комитетов Парламента КБР, способствуя разработке и внедрению инициатив, направленных на устойчивое развитие агропромышленного комплекса региона и поддержку сельхозпроизводителей.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-mission" class="content-section section-padding overflow-hidden" data-aos="fade-up">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl section-title text-center mb-16 md:mb-24">Наша <span class="gradient-text">Миссия</span> и <span class="gradient-text">Ценности</span></h2>
+                    <div class="grid md:grid-cols-2 gap-12 md:gap-16 items-stretch">
+                        <div class="mission-values-card bg-gray-800/60 backdrop-blur-md border border-gray-700/50 p-8 rounded-xl shadow-xl" data-aos="fade-right" data-aos-delay="100" data-aos-duration="700">
+                            <h3 class="text-2xl md:text-3xl font-bold mb-6 flex items-center text-white">
+                                <span class="inline-flex items-center justify-center p-3 rounded-xl mr-4 gradient-bg text-white shadow-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" /> </svg>
+                                </span>
+                                Наша Миссия
+                            </h3>
+                            <p class="text-lg leading-relaxed text-gray-300">Обеспечивать аграриев России высококачественными семенами и комплексными агроуслугами. Мы внедряем передовые технологии, развиваем перспективные направления и вносим значимый вклад в продовольственную безопасность и экономическое процветание региона, опираясь на принципы устойчивого развития.</p>
+                        </div>
+                        <div class="mission-values-card bg-gray-800/60 backdrop-blur-md border border-gray-700/50 p-8 rounded-xl shadow-xl" data-aos="fade-left" data-aos-delay="200" data-aos-duration="700">
+                             <h3 class="text-2xl md:text-3xl font-bold mb-6 flex items-center text-white">
+                                <span class="inline-flex items-center justify-center p-3 rounded-xl mr-4 gradient-bg text-white shadow-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" /> </svg>
+                                </span>
+                                Наши Ценности
+                            </h3>
+                            <div class="space-y-3 text-lg text-gray-300">
+                                <span class="value-item flex items-center"><span class="value-icon">✓</span>Качество продукции и услуг</span>
+                                <span class="value-item flex items-center"><span class="value-icon">✓</span>Инновации и технологичность</span>
+                                <span class="value-item flex items-center"><span class="value-icon">✓</span>Надежность и партнерство</span>
+                                <span class="value-item flex items-center"><span class="value-icon">✓</span>Ответственность перед клиентами и обществом</span>
+                                <span class="value-item flex items-center"><span class="value-icon">✓</span>Постоянное развитие и обучение</span>
+                                <span class="value-item flex items-center"><span class="value-icon">✓</span>Эффективность и результативность</span>
+                            </div>
+                            <p class="mt-8 text-lg font-semibold gradient-text text-center md:text-left">Активно способствуем импортозамещению и развитию отечественного АПК.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-infrastructure" class="content-section section-padding overflow-hidden" data-aos="fade-up">
+                <div class="container mx-auto px-4">
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl section-title text-center mb-8 md:mb-12">Инфраструктура и <span class="gradient-text">Ресурсы</span></h2>
+                    <p class="text-lg md:text-xl section-subtitle text-center mb-16 md:mb-24 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">Современная база для обеспечения полного цикла производства и хранения высококачественной продукции.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10 mb-16 md:mb-24">
+                        <div class="infra-card" data-aos="fade-up" data-aos-delay="150">
+                            <div class="infra-icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z" /></svg></div>
+                            <h3 class="text-xl font-semibold text-white mt-5 mb-3">Хранение Зерна</h3>
+                            <p class="text-gray-400">Современный элеваторный комплекс емкостью 20 000 тонн.</p>
+                        </div>
+                        <div class="infra-card" data-aos="fade-up" data-aos-delay="250">
+                            <div class="infra-icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12a7.5 7.5 0 0 0 15 0m-15 0a7.5 7.5 0 1 1 15 0m-15 0H3m18 0h-1.5m-15.75 0a7.5 7.5 0 1 1 15 0m-15 0h-1.5m15.75 0h1.5m-1.5 1.5l-1.5-1.5m0 0l-1.5 1.5m-12-3l1.5 1.5m0 0l1.5-1.5" /></svg></div>
+                             <h3 class="text-xl font-semibold text-white mt-5 mb-3">Подработка Семян</h3>
+                            <p class="text-gray-400">Высокопроизводительная европейская линия (50 тонн/час).</p>
+                        </div>
+                        <div class="infra-card" data-aos="fade-up" data-aos-delay="350">
+                            <div class="infra-icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z" /></svg></div>
+                             <h3 class="text-xl font-semibold text-white mt-5 mb-3">Мелиорация</h3>
+                            <p class="text-gray-400">Системы орошения на 900+ га. Цель - 100% охват земель.</p>
+                        </div>
+                        <div class="infra-card" data-aos="fade-up" data-aos-delay="450">
+                            <div class="infra-icon-wrapper"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l-4.95-4.95a2.652 2.652 0 0 1 0-3.752l3.75-3.75a2.652 2.652 0 0 1 3.752 0l4.95 4.95M3.75 12h.008v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.125h.008v.008h-.008v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" /></svg></div>
+                             <h3 class="text-xl font-semibold text-white mt-5 mb-3">Техническая База</h3>
+                            <p class="text-gray-400">Собственная ремонтная мастерская и парк современной техники.</p>
+                        </div>
+                    </div>
+                    <div class="infographic-container gradient-border p-8 md:p-12 rounded-xl bg-gray-800/60 backdrop-blur-md shadow-xl" data-aos="zoom-in-up" data-aos-delay="500" data-aos-duration="700">
+                        <svg width="0" height="0" style="position:absolute;">
+                            <defs>
+                                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:var(--primary-color-start); stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:var(--primary-color-end); stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16 text-center">
+                            <div class="infographic-item" data-value="20000" data-max="25000">
+                                <div class="infographic-visual mx-auto mb-4">
+                                    <svg viewBox="0 0 100 100">
+                                        <circle class="infographic-circle-bg" cx="50" cy="50" r="45"></circle>
+                                        <circle class="infographic-circle-progress" cx="50" cy="50" r="45"></circle>
+                                    </svg>
+                                    <div class="infographic-value absolute inset-0 flex items-center justify-center text-2xl font-bold text-white">0</div>
+                                </div>
+                                <div class="infographic-label text-lg text-gray-300">Емкость Хранения <span class="infographic-unit block text-sm text-gray-500">(тонн)</span></div>
+                            </div>
+                            <div class="infographic-item" data-value="50" data-max="60">
+                                <div class="infographic-visual mx-auto mb-4">
+                                    <svg viewBox="0 0 100 100">
+                                        <circle class="infographic-circle-bg" cx="50" cy="50" r="45"></circle>
+                                        <circle class="infographic-circle-progress" cx="50" cy="50" r="45"></circle>
+                                    </svg>
+                                    <div class="infographic-value absolute inset-0 flex items-center justify-center text-2xl font-bold text-white">0</div>
+                                </div>
+                                <div class="infographic-label text-lg text-gray-300">Линия Подработки <span class="infographic-unit block text-sm text-gray-500">(тонн/час)</span></div>
+                            </div>
+                            <div class="infographic-item" data-value="900" data-max="1500">
+                                <div class="infographic-visual mx-auto mb-4">
+                                    <svg viewBox="0 0 100 100">
+                                        <circle class="infographic-circle-bg" cx="50" cy="50" r="45"></circle>
+                                        <circle class="infographic-circle-progress" cx="50" cy="50" r="45"></circle>
+                                    </svg>
+                                    <div class="infographic-value absolute inset-0 flex items-center justify-center text-2xl font-bold text-white">0</div>
+                                </div>
+                                <div class="infographic-label text-lg text-gray-300">Площадь Орошения <span class="infographic-unit block text-sm text-gray-500">(гектар)</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-timeline" class="content-section section-padding overflow-hidden" data-aos="fade-up">
+                 <div class="container mx-auto px-4">
+                    <h2 class="text-4xl md:text-5xl lg:text-6xl section-title text-center mb-16 md:mb-24">Ключевые <span class="gradient-text">Этапы</span> Развития</h2>
+                    <div class="timeline relative max-w-3xl mx-auto">
+                        <div class="timeline-line"></div>
+                        <div class="timeline-item timeline-left mb-12" data-aos="fade-right">
+                            <div class="timeline-content bg-gray-800/60 backdrop-blur-md border border-gray-700/50 p-6 rounded-lg shadow-xl relative">
+                                <div class="timeline-arrow"></div>
+                                <h3 class="timeline-year text-xl font-semibold gradient-text mb-2">Начало 2000-х</h3>
+                                <p class="timeline-text text-gray-300">Основание хозяйства, фокус на выращивании основных с/х культур.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item timeline-right mb-12" data-aos="fade-left">
+                             <div class="timeline-content bg-gray-800/60 backdrop-blur-md border border-gray-700/50 p-6 rounded-lg shadow-xl relative">
+                                <div class="timeline-arrow"></div>
+                                <h3 class="timeline-year text-xl font-semibold gradient-text mb-2">2010-е</h3>
+                                <p class="timeline-text text-gray-300">Расширение земельного банка, начало инвестиций в инфраструктуру хранения.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item timeline-left mb-12" data-aos="fade-right">
+                            <div class="timeline-content bg-gray-800/60 backdrop-blur-md border border-gray-700/50 p-6 rounded-lg shadow-xl relative">
+                                <div class="timeline-arrow"></div>
+                                <h3 class="timeline-year text-xl font-semibold gradient-text mb-2">2015</h3>
+                                <p class="timeline-text text-gray-300">Начало общественной деятельности, избрание Депутатом Парламента КБР.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item timeline-right mb-12" data-aos="fade-left">
+                             <div class="timeline-content bg-gray-800/60 backdrop-blur-md border border-gray-700/50 p-6 rounded-lg shadow-xl relative">
+                                <div class="timeline-arrow"></div>
+                                <h3 class="timeline-year text-xl font-semibold gradient-text mb-2">Конец 2010-х</h3>
+                                <p class="timeline-text text-gray-300">Ввод в эксплуатацию современного зернохранилища и линии подработки семян.</p>
+                            </div>
+                        </div>
+                         <div class="timeline-item timeline-left mb-12" data-aos="fade-right">
+                            <div class="timeline-content bg-gray-800/60 backdrop-blur-md border border-gray-700/50 p-6 rounded-lg shadow-xl relative">
+                                <div class="timeline-arrow"></div>
+                                <h3 class="timeline-year text-xl font-semibold gradient-text mb-2">Начало 2020-х</h3>
+                                <p class="timeline-text text-gray-300">Активное внедрение систем мелиорации, фокус на импортозамещении и семеноводстве.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item timeline-right mb-12" data-aos="fade-left">
+                             <div class="timeline-content bg-gray-800/60 backdrop-blur-md border border-gray-700/50 p-6 rounded-lg shadow-xl relative">
+                                <div class="timeline-arrow"></div>
+                                <h3 class="timeline-year text-xl font-semibold gradient-text mb-2">Сегодня</h3>
+                                <p class="timeline-text text-gray-300">Лидерство в регионе, развитие новых направлений, курс на устойчивое развитие.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="main-footer bg-gray-950/70 backdrop-blur-sm mt-24 md:mt-32 py-12 md:py-16 border-t border-gray-800">
+        <div class="container mx-auto px-4 text-center text-gray-400">
+            <div class="footer-logo text-2xl font-bold text-white mb-6">ИП Прытков М.А.</div>
+            <div class="footer-social-links flex justify-center space-x-6 mb-8">
+                 <a href="#" aria-label="Telegram" class="text-gray-400 hover:text-white transition duration-300 text-2xl">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.17.9-.502 1.2-.822 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                 </a>
+                 <a href="#" aria-label="WhatsApp" class="text-gray-400 hover:text-white transition duration-300 text-2xl">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.712-.971zM8.377 9.271c-.07-.15-.246-.24-.51-.277-.267-.039-.562-.034-.847.04-.285.076-.676.345-.99.837-.313.493-.571 1.04-.674 1.28-.105.236-.214.48-.074.722.137.234.596.78 1.365 1.558.955.99 1.797 1.891 2.768 2.463.97.572 1.735.917 2.448 1.152.713.235 1.365.194 1.88.101.515-.093 1.657-.687 1.897-1.339.243-.652.243-1.217.162-1.339-.082-.121-.267-.194-.552-.346-.285-.154-1.657-.826-1.916-.917-.26-.093-.449-.14-.639.14-.19.281-.728.917-.89.109-.164.194-.285.339-.465.14-.181.285-.302.43-.465.17-.194.285-.347.39-.557.105-.21.053-.397-.03-.552-.082-.153-.687-1.656-.945-2.267z"/></svg>
+                 </a>
+            </div>
+            <div class="footer-copyright text-sm">
+                &copy; <span id="current-year"></span> ИП Прытков Михаил Алексеевич. Все права защищены.
+                <div class="mt-2">
+                    <a href="#" class="hover:text-white transition duration-200">Политика конфиденциальности</a>
+                    <span class="opacity-50 mx-2">|</span>
+                    <a href="#" class="hover:text-white transition duration-200">Условия использования</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script type="module" src="../JS/about.js"></script>
+
+</body>
+</html>

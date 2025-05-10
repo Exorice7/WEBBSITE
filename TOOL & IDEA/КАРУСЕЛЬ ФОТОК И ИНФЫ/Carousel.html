@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Easter Carousel</title>
+    <style>
+        /* Import font */
+        @import url(https://fonts.bunny.net/css?family=abel:400);
+
+        /* Define layers */
+        @layer base, demo;
+
+        /* Demo layer styles */
+        @layer demo {
+            .carousel {
+                /* CSS variables for configuration */
+                --items: 6; /* Number of items */
+                --carousel-duration: 40s; /* Default animation duration */
+                @media (width > 600px) {
+                    --carousel-duration: 30s; /* Faster duration on wider screens */
+                }
+                --carousel-width: min(80vw, 800px); /* Carousel width, responsive */
+                --carousel-item-width: 280px; /* Width of each item */
+                --carousel-item-height: 450px; /* Height of each item */
+                --carousel-item-gap: 2rem; /* Gap between items */
+
+                --clr-cta: rgb(0, 132, 209); /* Call-to-action color */
+
+                position: relative; /* Needed for absolute positioning of children */
+                width: var(--carousel-width);
+                height: var(--carousel-item-height);
+                overflow: clip; /* Hide overflowing content */
+            }
+
+            .carousel[mask] {
+                /* Fade out effect on the sides */
+                mask-image: linear-gradient(
+                    to right,
+                    transparent,
+                    black 10% 90%,
+                    transparent
+                );
+            }
+
+            .carousel[reverse] > article {
+                /* Reverse animation direction if 'reverse' attribute is present */
+                animation-direction: reverse;
+            }
+
+            /*
+             * Removed the hover pause rule:
+             * &:hover > article {
+             * animation-play-state: paused;
+             * }
+             */
+
+            .carousel > article {
+                position: absolute; /* Position items absolutely within the carousel */
+                top: 0;
+                /* Start items off-screen to the right */
+                left: calc(100% + var(--carousel-item-gap));
+                width: var(--carousel-item-width);
+                height: var(--carousel-item-height);
+                display: grid; /* Use grid layout for item content */
+                grid-template-rows: 200px auto 1fr auto; /* Define row structure */
+                gap: 0.25rem; /* Gap between grid rows */
+                border: 1px solid light-dark(rgba(0 0 0 / 0.25), rgba(255 255 255 / 0.15)); /* Border with light/dark mode support */
+                padding-block-end: 1rem; /* Padding at the bottom */
+                border-radius: 10px; /* Rounded corners */
+                background: light-dark(white, rgba(255 255 255 / 0.05)); /* Background with light/dark mode support */
+                color: light-dark(rgb(49, 65, 88), white); /* Text color with light/dark mode support */
+
+                /* Animation setup */
+                will-change: transform; /* Optimize animation performance */
+                animation-name: marquee;
+                animation-duration: var(--carousel-duration);
+                animation-timing-function: linear; /* Constant speed */
+                animation-iteration-count: infinite; /* Loop forever */
+                /* Calculate animation delay for each item to stagger them */
+                animation-delay: calc(
+                    var(--carousel-duration) / var(--items) * var(--i) * -1
+                );
+            }
+
+            /* Assign index (--i) for animation delay calculation */
+            .carousel > article:nth-child(1) { --i: 0; }
+            .carousel > article:nth-child(2) { --i: 1; }
+            .carousel > article:nth-child(3) { --i: 2; }
+            .carousel > article:nth-child(4) { --i: 3; }
+            .carousel > article:nth-child(5) { --i: 4; }
+            .carousel > article:nth-child(6) { --i: 5; }
+            /* Add more if needed */
+            .carousel > article:nth-child(7) { --i: 6; }
+            .carousel > article:nth-child(8) { --i: 7; }
+
+            .carousel img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* Ensure image covers the area */
+                border-radius: 10px 10px 0 0; /* Rounded top corners */
+            }
+
+            .carousel > article > *:not(img) {
+                /* Padding for content elements */
+                padding: 0 1rem;
+            }
+
+            .carousel > article > div {
+                /* Container for paragraph and link */
+                grid-row: span 2; /* Span two grid rows */
+                display: grid;
+                grid-template-rows: subgrid; /* Inherit row sizes */
+                font-size: 0.8rem;
+            }
+
+            .carousel > article h2 {
+                font-size: 1.2rem;
+                font-weight: 300;
+                padding-block: 0.75rem 0.25rem;
+                margin: 0;
+            }
+
+            .carousel > article p {
+                margin: 0;
+            }
+
+            .carousel > article a {
+                /* Link styling */
+                text-decoration: none;
+                text-transform: lowercase;
+                border: 1px solid var(--clr-cta);
+                color: light-dark(var(--clr-cta), white);
+                border-radius: 3px;
+                padding: 0.25rem 0.5rem;
+                place-self: start; /* Align link to the start */
+                transition: 150ms ease-in-out; /* Smooth transition */
+            }
+
+            .carousel > article a:hover,
+            .carousel > article a:focus-visible {
+                /* Hover/focus styles for the link */
+                background-color: var(--clr-cta);
+                color: white;
+                outline: none;
+            }
+
+            /* Marquee animation definition */
+            @keyframes marquee {
+                100% {
+                    /* Move items completely across the carousel width */
+                    transform: translateX(
+                        calc(
+                            (var(--items) * (var(--carousel-item-width) + var(--carousel-item-gap))) * -1
+                        )
+                    );
+                }
+            }
+        }
+
+        /* Base layer styles */
+        @layer base {
+            * {
+                box-sizing: border-box; /* Include padding and border in element's total width and height */
+            }
+            :root {
+                color-scheme: light dark; /* Enable light and dark mode */
+
+                /* Define color variables */
+                --bg-dark: rgb(2, 6, 24);
+                --bg-light: rgb(229, 229, 229);
+                --txt-light: rgb(10, 10, 10);
+                --txt-dark: rgb(245, 245, 245);
+            }
+            body {
+                background-color: light-dark(var(--bg-light), var(--bg-dark)); /* Set background based on mode */
+                color: light-dark(var(--txt-light), var(--txt-dark)); /* Set text color based on mode */
+                min-height: 100svh; /* Minimum height of the viewport */
+                margin: 0;
+                padding: 1rem;
+                font-size: 1rem;
+                font-family: "Abel", sans-serif; /* Set default font */
+                line-height: 1.5;
+                display: grid; /* Center content */
+                place-items: center;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Easter Symbols Carousel</h1>
+
+    <div class="carousel" mask>
+        <article>
+            <img src="https://images.pexels.com/photos/635699/pexels-photo-635699.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="The Cross">
+            <h2>The Cross</h2>
+            <div>
+                <p>The Cross is a central symbol of Easter, representing the crucifixion of Jesus Christ and his sacrifice for humanity. It serves as a reminder of suffering, love, and redemption, and is often displayed during Holy Week and Easter Sunday to honor the foundation of Christian faith.</p>
+                <a href="#">Read more</a>
+            </div>
+        </article>
+
+        <article>
+            <img src="https://images.pexels.com/photos/7168798/pexels-photo-7168798.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="easter eggs">
+            <h2>Easter Eggs</h2>
+            <div>
+                <p>Easter eggs are a colorful symbol of new life and rebirth, often decorated and hidden for festive hunts. The tradition comes from ancient spring rituals and was later adopted into Easter celebrations to represent the resurrection.</p>
+                <a href="#">Read more</a>
+            </div>
+        </article>
+
+        <article>
+            <img src="https://images.pexels.com/photos/4099179/pexels-photo-4099179.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="hot cross buns">
+            <h2>Hot Cross Buns</h2>
+            <div>
+                <p>Hot cross buns are sweet, spiced buns marked with a cross on top, traditionally eaten on Good Friday. They originated in England and symbolize the crucifixion, with the cross representing Jesus and the spices recalling burial traditions.</p>
+                <a href="#">Read more</a>
+            </div>
+        </article>
+
+        <article>
+            <img src="https://images.pexels.com/photos/5145/animal-easter-chick-chicken.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="easter chick">
+            <h2>Easter Chick</h2>
+            <div>
+                <p>Easter chicks are a cheerful symbol of new life and beginnings, often seen alongside eggs in spring decorations. They represent birth and renewal, tying into the themes of Easter and the arrival of spring.</p>
+                <a href="#">Read more</a>
+            </div>
+        </article>
+
+        <article>
+            <img src="https://images.pexels.com/photos/2072158/pexels-photo-2072158.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="easter bunny">
+            <h2>Easter Bunnies</h2>
+            <div>
+                <p>Easter bunnies are a popular symbol of spring and new life, often seen delivering colorful eggs to children.</p>
+                <a href="#">Read more</a>
+            </div>
+        </article>
+
+        <article>
+            <img src="https://images.pexels.com/photos/12787666/pexels-photo-12787666.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="crown of thorns">
+            <h2>Crown of Thorns</h2>
+            <div>
+                <p>The Crown of Thorns symbolizes the suffering of Jesus before his crucifixion. It represents the pain he endured for humanity’s salvation and is a reminder of his sacrifice during Easter.</p>
+                <a href="#">Read more</a>
+            </div>
+        </article>
+
+    </div>
+
+</body>
+</html>

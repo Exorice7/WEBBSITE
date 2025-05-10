@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebGL Слайдер с Модальным Окном</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script async src="https://ga.jspm.io/npm:es-module-shims@1.8.3/dist/es-module-shims.js"></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://esm.sh/three@0.163.0"
+        }
+      }
+    </script>
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f97316;
+            --text-dark: #1e293b;
+            --text-light: #f8fafc;
+            --bg-light: #f1f5f9;
+            --card-bg: #ffffff;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --background-dark: #111827;
+            --fade-width: 150px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Poppins", sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            margin: 0;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        #webgl-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #webgl-container::before,
+        #webgl-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: var(--fade-width);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        #webgl-container::before {
+            left: 0;
+            background: linear-gradient(to right, var(--background-dark) 20%, transparent);
+        }
+
+        #webgl-container::after {
+            right: 0;
+            background: linear-gradient(to left, var(--background-dark) 20%, transparent);
+        }
+
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: auto;
+            cursor: grab;
+            display: block;
+        }
+
+        body.dragging #canvas {
+            cursor: grabbing;
+        }
+
+        #interaction-hint {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 5px 15px;
+            border-radius: 15px;
+            z-index: 3;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #interaction-hint.hidden {
+            opacity: 0;
+        }
+
+        #canvas.clickable {
+            cursor: pointer;
+        }
+
+        #loading-indicator {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.2rem;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(15, 23, 42, 0.7);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1000; opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+            backdrop-filter: blur(5px);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal {
+            background: white; width: 90%; max-width: 700px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: scale(0.9); opacity: 0;
+            transition: var(--transition);
+            display: flex; flex-direction: column; max-height: 90vh;
+            color: var(--text-dark);
+        }
+        .modal-overlay.active .modal { transform: scale(1); opacity: 1; }
+
+        .modal-header {
+            position: relative; height: 280px; overflow: hidden; flex-shrink: 0;
+        }
+        .modal-header img { width: 100%; height: 100%; object-fit: cover; }
+        .modal-header::after {
+            content: ""; position: absolute; bottom: 0; left: 0;
+            height: 100px; width: 100%;
+            background: linear-gradient(to top, rgba(255, 255, 255, 1), transparent);
+        }
+
+        .modal-close {
+            position: absolute; top: 1rem; right: 1rem;
+            background: rgba(255, 255, 255, 0.8); width: 36px; height: 36px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 10; transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .modal-close:hover { background: white; transform: rotate(90deg); }
+        .modal-close::before, .modal-close::after {
+            content: ""; position: absolute; width: 18px; height: 2px;
+            background: #1e293b; border-radius: 1px;
+        }
+        .modal-close::before { transform: rotate(45deg); }
+        .modal-close::after { transform: rotate(-45deg); }
+
+        .modal-body-content { overflow-y: auto; flex-grow: 1; background: white; }
+        .modal-content {
+            padding: 2rem; position: relative; margin-top: -40px;
+            background: transparent;
+        }
+
+        .modal-title {
+            font-size: 2rem; font-weight: 600; color: var(--text-dark); margin-bottom: 1rem;
+        }
+        .modal-subtitle {
+            font-size: 1.1rem; color: var(--primary); margin-bottom: 1.5rem; font-weight: 500;
+        }
+        .modal-text { color: #475569; line-height: 1.75; margin-bottom: 2rem; }
+        .modal-text p { margin-bottom: 1rem; }
+
+        .tag-list { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem; }
+        .tag {
+            background: #f1f5f9; color: #475569; padding: 0.4rem 0.8rem;
+            border-radius: 6px; font-size: 0.8rem; font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .tag:hover { background: #e2e8f0; }
+
+        .modal-footer {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 2rem; background: white; border-top: 1px solid #e2e8f0;
+            flex-shrink: 0;
+        }
+
+        .btn {
+            display: inline-block; padding: 0.8rem 1.6rem; border-radius: 8px;
+            text-decoration: none; font-weight: 500; transition: all 0.3s ease;
+            cursor: pointer; border: none;
+        }
+        .btn-primary {
+            background: var(--primary); color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 6px 15px rgba(99, 102, 241, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .modal-share { display: flex; gap: 1rem; }
+        .share-icon {
+            width: 40px; height: 40px; border-radius: 50%; background: #f1f5f9;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .share-icon svg { stroke: #64748b; transition: stroke 0.3s ease; }
+        .share-icon:hover { background: #e2e8f0; transform: translateY(-2px); }
+        .share-icon:hover svg { stroke: var(--primary); }
+
+        @media (max-width: 768px) {
+            :root { --fade-width: 80px; }
+            .modal { width: 95%; max-height: 85vh;}
+            .modal-header { height: 200px; }
+            .modal-content { padding: 1.5rem; margin-top: -30px; }
+            .modal-title { font-size: 1.6rem; }
+            .modal-subtitle { font-size: 1rem; }
+            .modal-footer { flex-direction: column; gap: 1rem; padding: 1rem 1.5rem; }
+            .modal-share { width: 100%; justify-content: center; }
+            #interaction-hint { font-size: 0.7rem; bottom: 20px; }
+        }
+         @media (max-width: 480px) {
+             :root { --fade-width: 50px; }
+         }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="webgl-container">
+        <canvas id="canvas"></canvas>
+        <div id="interaction-hint">Перетаскивайте или используйте колесо мыши для прокрутки. Нажмите на изображение для деталей.</div>
+    </div>
+
+    <div id="loading-indicator">Загрузка...</div>
+
+    <div class="modal-overlay">
+        <div class="modal">
+            <div class="modal-header">
+                <img src="" alt="Modal header image" id="modal-img" onerror="this.src='https://placehold.co/700x280/cccccc/ffffff?text=Image+Error';">
+                <div class="modal-close" title="Закрыть"></div>
+            </div>
+            <div class="modal-body-content">
+                <div class="modal-content">
+                    <h1 class="modal-title" id="modal-title">Modal Title</h1>
+                    <h3 class="modal-subtitle" id="modal-subtitle">Modal Subtitle</h3>
+                    <div class="tag-list" id="modal-tags">
+                    </div>
+                    <div class="modal-text" id="modal-text">
+                        <p>Modal content goes here...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-primary">Забронировать</a>
+                <div class="modal-share">
+                     <div class="share-icon" title="Поделиться в Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></div>
+                     <div class="share-icon" title="Поделиться в Twitter"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></div>
+                     <div class="share-icon" title="Поделиться в Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import * as THREE from 'three';
+
+        let targetPosition = 0;
+        let currentPosition = 0;
+        let isDragging = false;
+        let startX = 0;
+        let currentX = 0;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let isActualDrag = false;
+        let hoveredPlane = null;
+        let hintTimeout = null;
+
+        const dampingFactor = 0.08;
+        const dragSpeed = 0.012;
+        const wheelSpeed = 0.6;
+        const slideCount = 6;
+        const imagesCount = 6;
+        const planeWidth = 5;
+        const planeHeight = 3;
+        const planeGap = 1;
+        const totalPlaneWidth = planeWidth + planeGap;
+        const dragThreshold = 10;
+        const hoverScale = 1.05;
+        const defaultScale = 1.0;
+
+        const body = document.body;
+        const canvas = document.getElementById('canvas');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const interactionHint = document.getElementById('interaction-hint');
+
+        const modalOverlay = document.querySelector(".modal-overlay");
+        const modalClose = document.querySelector(".modal-close");
+        const modal = document.querySelector(".modal");
+        const modalImg = document.getElementById("modal-img");
+        const modalTitle = document.getElementById("modal-title");
+        const modalSubtitle = document.getElementById("modal-subtitle");
+        const modalTags = document.getElementById("modal-tags");
+        const modalText = document.getElementById("modal-text");
+        const modalBodyContent = document.querySelector(".modal-body-content");
+
+        const slideData = [
+             {
+                 imgSrc: "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
+                 title: "Галактика", modalTitle: "Исследуй Галактику", modalSubtitle: "Путешествие к далеким звездам",
+                 modalTags: ["Космос", "Астрономия", "Звезды", "Наука"],
+                 modalText: "<p>Бесконечные просторы космоса манят человечество с незапамятных времен. Современные технологии позволяют нам заглянуть в самые отдаленные уголки Вселенной.</p><p>Присоединяйтесь к виртуальному туру по Млечному Пути, узнайте о формировании звезд и планет, и, возможно, найдите ответы на вечные вопросы о нашем месте во Вселенной.</p>"
+             },
+             {
+                 imgSrc: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1200&q=80",
+                 title: "Горные Звезды", modalTitle: "Ночь в Горах", modalSubtitle: "Под куполом звездного неба",
+                 modalTags: ["Горы", "Ночь", "Астрофото", "Природа"],
+                 modalText: "<p>Высоко в горах, вдали от городских огней, небо раскрывается во всей своей красе. Миллиарды звезд создают незабываемое зрелище.</p><p>Наши ночные походы предлагают уникальную возможность насладиться тишиной гор и великолепием Млечного Пути. Опытные гиды расскажут о созвездиях и помогут сделать потрясающие астрофотографии.</p>"
+             },
+             {
+                 imgSrc: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format=fit&crop&w=1200&q=80",
+                 title: "Зеленые Холмы", modalTitle: "Прогулка по Холмам", modalSubtitle: "Гармония природы и спокойствия",
+                 modalTags: ["Пейзаж", "Природа", "Прогулка", "Отдых"],
+                 modalText: "<p>Живописные зеленые холмы — идеальное место для отдыха от городской суеты. Свежий воздух, пение птиц и бескрайние просторы помогут восстановить силы.</p><p>Отправьтесь на неспешную прогулку по извилистым тропам, насладитесь видами и устройте пикник на вершине холма. Это прекрасный способ провести время с семьей или друзьями.</p>"
+             },
+              {
+                 imgSrc: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format=fit&crop&w=1200&q=80",
+                 title: "Отражение в Озере", modalTitle: "Зеркальное Озеро", modalSubtitle: "Где небо встречается с водой",
+                 modalTags: ["Озеро", "Отражение", "Пейзаж", "Спокойствие"],
+                 modalText: "<p>Спокойная гладь горного озера отражает небо и окружающие вершины, создавая почти сюрреалистическую картину.</p><p>Проведите день у озера, наслаждаясь тишиной и красотой природы. Можно покататься на лодке, порыбачить или просто медитировать на берегу, наблюдая за игрой света и тени на воде.</p>"
+             },
+             {
+                 imgSrc: "https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format=fit&crop&w=1200&q=80",
+                 title: "Побережье", modalTitle: "Морское Побережье", modalSubtitle: "Сила и красота океана",
+                 modalTags: ["Море", "Пляж", "Скалы", "Путешествие"],
+                 modalText: "<p>Могучие скалы, омываемые волнами океана, создают драматические и захватывающие пейзажи. Шум прибоя и соленый ветер дарят ощущение свободы.</p><p>Исследуйте береговую линию, найдите уединенные бухты, наблюдайте за морскими птицами и почувствуйте энергию стихии. Это место силы и вдохновения.</p>"
+             },
+              {
+                 imgSrc: "https://images.unsplash.com/photo-1532274402911-5a369e4c4bb5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format=fit&crop&w=1200&q=80",
+                 title: "Голубое Озеро", modalTitle: "Лазурное Озеро", modalSubtitle: "Чистота и прохлада горной воды",
+                 modalTags: ["Озеро", "Горы", "Лето", "Чистота"],
+                 modalText: "<p>Кристально чистая вода горного озера имеет невероятный лазурный оттенок. Деревянный пирс приглашает окунуться в прохладу или просто посидеть, наслаждаясь видом.</p><p>Идеальное место для летнего отдыха: купание, загар, пикники и неспешные прогулки по живописным окрестностям.</p>"
+             }
+        ];
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 4;
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        const textureLoader = new THREE.TextureLoader();
+        const textures = [];
+        const planes = [];
+        let texturesLoaded = 0;
+        let experienceStarted = false;
+
+        function texturesDidLoad() {
+            if (experienceStarted) return;
+            experienceStarted = true;
+            loadingIndicator.style.display = 'none';
+            createPlanes();
+            animate();
+            showInteractionHint();
+        }
+
+        function loadTextures() {
+             if (slideData.length === 0) {
+                 loadingIndicator.textContent = "Ошибка: Нет данных для слайдов.";
+                 return;
+             }
+             const numToLoad = Math.min(imagesCount, slideData.length);
+             if (numToLoad === 0) {
+                 texturesDidLoad();
+                 return;
+             }
+
+             for (let i = 0; i < numToLoad; i++) {
+                 const data = slideData[i % slideData.length];
+                 textureLoader.load(
+                     data.imgSrc,
+                     (texture) => {
+                         texture.colorSpace = THREE.SRGBColorSpace;
+                         textures[i] = texture;
+                         texturesLoaded++;
+                         if (texturesLoaded === numToLoad) {
+                             texturesDidLoad();
+                         }
+                     },
+                     undefined,
+                     (error) => {
+                         console.error(`Ошибка загрузки изображения ${i + 1}:`, error);
+                         const canvasPlaceholder = document.createElement('canvas');
+                         canvasPlaceholder.width = 256; canvasPlaceholder.height = 256;
+                         const context = canvasPlaceholder.getContext('2d');
+                         context.fillStyle = `hsl(${i * 60}, 50%, 30%)`;
+                         context.fillRect(0, 0, 256, 256);
+                         context.fillStyle = 'white'; context.font = 'bold 20px Poppins';
+                         context.textAlign = 'center';
+                         context.fillText(`Ошибка`, 128, 120);
+                          context.font = '16px Poppins';
+                         context.fillText(`Изображение ${i+1}`, 128, 150);
+                         textures[i] = new THREE.CanvasTexture(canvasPlaceholder);
+                         textures[i].colorSpace = THREE.SRGBColorSpace;
+                         texturesLoaded++;
+                         if (texturesLoaded === numToLoad) {
+                             texturesDidLoad();
+                         }
+                     }
+                 );
+             }
+        }
+
+        function createPlanes() {
+            planes.length = 0;
+             while(scene.children.length > 0){
+                 scene.remove(scene.children[0]);
+             }
+            const numPlanes = Math.min(slideCount, textures.length);
+             if (numPlanes === 0) {
+                 console.warn("Нет текстур для создания слайдов.");
+                 return;
+             }
+
+            for (let i = 0; i < numPlanes; i++) {
+                const texture = textures[i];
+                if (!texture) {
+                    planes.push(null);
+                    continue;
+                }
+                const geometry = new THREE.PlaneGeometry(planeWidth, planeHeight, 32, 32);
+                const material = new THREE.MeshBasicMaterial({
+                    map: texture,
+                    side: THREE.DoubleSide,
+                    transparent: true,
+                    opacity: 1
+                });
+                const plane = new THREE.Mesh(geometry, material);
+                plane.position.x = i * totalPlaneWidth;
+                plane.userData.index = i;
+                scene.add(plane);
+                planes.push(plane);
+            }
+
+             if (numPlanes > 1) {
+                 targetPosition = totalPlaneWidth * 0.1;
+             } else {
+                 targetPosition = 0;
+             }
+             currentPosition = targetPosition;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        }
+
+        function showInteractionHint() {
+            if (hintTimeout) clearTimeout(hintTimeout);
+            interactionHint.classList.remove('hidden');
+            hintTimeout = setTimeout(() => {
+                interactionHint.classList.add('hidden');
+            }, 5000);
+        }
+
+        function hideInteractionHintImmediately() {
+             if (hintTimeout) clearTimeout(hintTimeout);
+             interactionHint.classList.add('hidden');
+        }
+
+        function handleInteractionStart(clientX, clientY) {
+            if (modalOverlay.classList.contains('active')) return;
+
+            isDragging = true;
+            startX = clientX;
+            currentX = clientX;
+            dragStartX = clientX;
+            dragStartY = clientY;
+            isActualDrag = false;
+            body.classList.add('dragging');
+            hideInteractionHintImmediately();
+        }
+
+        function handleInteractionMove(clientX, clientY) {
+            if (!isDragging) return;
+
+            if (!isActualDrag) {
+                const dx = clientX - dragStartX;
+                const dy = clientY - dragStartY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                if (distance > dragThreshold) {
+                    isActualDrag = true;
+                }
+            }
+
+            currentX = clientX;
+            const deltaX = currentX - startX;
+            targetPosition -= deltaX * dragSpeed;
+            startX = currentX;
+
+            const numValidPlanes = planes.filter(p => p).length;
+            if (numValidPlanes > 0) {
+                const minPos = 0 - totalPlaneWidth * 0.3;
+                const maxPos = (numValidPlanes - 1) * totalPlaneWidth + totalPlaneWidth * 0.3;
+                targetPosition = Math.max(minPos, Math.min(targetPosition, maxPos));
+            }
+
+            if (hoveredPlane) {
+                 hoveredPlane = null;
+                 canvas.classList.remove('clickable');
+            }
+        }
+
+        function handleInteractionEnd(clientX, clientY) {
+            if (!isDragging) return;
+
+            const wasDragging = isActualDrag;
+            isDragging = false;
+            body.classList.remove('dragging');
+
+             const numValidPlanes = planes.filter(p => p).length;
+             if (numValidPlanes > 0) {
+                 const closestSlideIndexRaw = targetPosition / totalPlaneWidth;
+                 const velocityFactor = (targetPosition - currentPosition) * 0.1;
+                 const closestSlideIndex = Math.round(closestSlideIndexRaw + (wasDragging ? velocityFactor : 0));
+
+                 const clampedIndex = Math.max(0, Math.min(closestSlideIndex, numValidPlanes - 1));
+                 targetPosition = clampedIndex * totalPlaneWidth;
+
+                 const minPos = 0;
+                 const maxPos = (numValidPlanes - 1) * totalPlaneWidth;
+                 targetPosition = Math.max(minPos, Math.min(targetPosition, maxPos));
+             }
+
+            if (!wasDragging) {
+                mouse.x = (clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(planes.filter(p => p));
+
+                if (intersects.length > 0) {
+                    const clickedPlane = intersects[0].object;
+                    const slideIndex = clickedPlane.userData.index;
+
+                    if (slideIndex !== undefined && slideData[slideIndex]) {
+                        openModalFromData(slideData[slideIndex]);
+                    }
+                }
+            }
+        }
+
+         function handleWheel(event) {
+             if (modalOverlay.classList.contains('active')) return;
+
+             const delta = Math.sign(event.deltaY);
+             targetPosition += delta * wheelSpeed;
+
+             const numValidPlanes = planes.filter(p => p).length;
+             if (numValidPlanes > 0) {
+                 const minPos = 0 - totalPlaneWidth * 0.1;
+                 const maxPos = (numValidPlanes - 1) * totalPlaneWidth + totalPlaneWidth * 0.1;
+                 targetPosition = Math.max(minPos, Math.min(targetPosition, maxPos));
+
+                 clearTimeout(wheelSnapTimeout);
+                 wheelSnapTimeout = setTimeout(() => {
+                   const closestSlideIndex = Math.round(targetPosition / totalPlaneWidth);
+                   const clampedIndex = Math.max(0, Math.min(closestSlideIndex, numValidPlanes - 1));
+                   targetPosition = clampedIndex * totalPlaneWidth;
+                 }, 150);
+             }
+             hideInteractionHintImmediately();
+         }
+         let wheelSnapTimeout;
+
+         function handleMouseMoveHover(event) {
+             if (isDragging || modalOverlay.classList.contains('active')) {
+                 if (hoveredPlane) {
+                     hoveredPlane = null;
+                     canvas.classList.remove('clickable');
+                 }
+                 return;
+             }
+
+             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+             raycaster.setFromCamera(mouse, camera);
+             const intersects = raycaster.intersectObjects(planes.filter(p => p));
+
+             if (intersects.length > 0) {
+                 const intersectedPlane = intersects[0].object;
+                 if (hoveredPlane !== intersectedPlane) {
+                     hoveredPlane = intersectedPlane;
+                     canvas.classList.add('clickable');
+                 }
+             } else {
+                 if (hoveredPlane) {
+                     hoveredPlane = null;
+                     canvas.classList.remove('clickable');
+                 }
+             }
+         }
+
+        const openModalFromData = (data) => {
+            modalImg.src = data.imgSrc;
+            modalImg.alt = data.title || data.modalTitle || 'Slide Image';
+            modalTitle.textContent = data.modalTitle || 'Details';
+            modalSubtitle.textContent = data.modalSubtitle || '';
+            modalText.innerHTML = data.modalText || '<p>No description available.</p>';
+
+            modalTags.innerHTML = '';
+            if (data.modalTags && Array.isArray(data.modalTags)) {
+                data.modalTags.forEach(tagText => {
+                    if (tagText && typeof tagText === 'string' && tagText.trim()) {
+                        const tagElement = document.createElement('span');
+                        tagElement.className = 'tag';
+                        tagElement.textContent = tagText.trim();
+                        modalTags.appendChild(tagElement);
+                    }
+                });
+            }
+
+            modalBodyContent.scrollTop = 0;
+            modalOverlay.classList.add("active");
+
+            const modalElements = modal.querySelectorAll(
+                 ".modal-title, .modal-subtitle, .tag, .modal-text p, .modal-text h1, .modal-text h2, .modal-text h3, .btn, .share-icon"
+            );
+            modalElements.forEach((el, index) => {
+                el.style.opacity = "0";
+                el.style.transform = "translateY(20px)";
+                el.style.transition = `all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) ${index * 0.04}s`;
+                setTimeout(() => {
+                    el.style.opacity = "1";
+                    el.style.transform = "translateY(0)";
+                }, 20);
+            });
+
+            document.body.style.overflow = "hidden";
+        };
+
+        const closeModal = () => {
+            modalOverlay.classList.remove("active");
+            document.body.style.overflow = "";
+
+             const modalElements = modal.querySelectorAll(".modal-title, .modal-subtitle, .tag, .modal-text p, .modal-text h1, .modal-text h2, .modal-text h3, .btn, .share-icon");
+             modalElements.forEach(el => {
+                 el.style.opacity = "";
+                 el.style.transform = "";
+                 el.style.transition = "";
+             });
+        };
+
+        window.addEventListener('resize', onWindowResize);
+
+        canvas.addEventListener('mousedown', (e) => handleInteractionStart(e.clientX, e.clientY));
+        document.addEventListener('mousemove', (e) => {
+             handleInteractionMove(e.clientX, e.clientY);
+             handleMouseMoveHover(e);
+        });
+        document.addEventListener('mouseup', (e) => handleInteractionEnd(e.clientX, e.clientY));
+        document.addEventListener('mouseleave', () => {
+            if (isDragging) {
+                handleInteractionEnd(currentX, 0);
+            }
+        });
+
+        canvas.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1) {
+                handleInteractionStart(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        }, { passive: true });
+
+        document.addEventListener('touchmove', (e) => {
+             if (isDragging && e.target === canvas) {
+                 // e.preventDefault(); // Consider implications
+             }
+             if (isDragging && e.touches.length === 1) {
+                 handleInteractionMove(e.touches[0].clientX, e.touches[0].clientY);
+             }
+        }, { passive: false });
+
+        document.addEventListener('touchend', (e) => {
+             if (e.changedTouches.length === 1) {
+                 handleInteractionEnd(e.changedTouches[0].clientX, e.changedTouches[0].clientY);
+             } else if (isDragging) {
+                  handleInteractionEnd(currentX, 0);
+             }
+        });
+        document.addEventListener('touchcancel', (e) => {
+             if (isDragging) {
+                 handleInteractionEnd(currentX, 0);
+             }
+        });
+
+        canvas.addEventListener('wheel', handleWheel, { passive: true });
+
+        modalClose.addEventListener("click", closeModal);
+        modalOverlay.addEventListener("click", (e) => {
+            if (e.target === modalOverlay) { closeModal(); }
+        });
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" && modalOverlay.classList.contains("active")) {
+                closeModal();
+            }
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const deltaTime = clock.getDelta();
+
+             const numValidPlanes = planes.filter(p => p).length;
+             if (numValidPlanes === 0 && experienceStarted) {
+                  renderer.render(scene, camera);
+                  return;
+             } else if (!experienceStarted) {
+                 return;
+             }
+
+            currentPosition += (targetPosition - currentPosition) * dampingFactor;
+
+            planes.forEach((plane) => {
+                if (!plane) return;
+                const index = plane.userData.index;
+
+                let planeTargetX = (index * totalPlaneWidth) - currentPosition;
+
+                plane.position.x = planeTargetX;
+
+                const distance = Math.abs(planeTargetX);
+                const maxVisibilityDistance = totalPlaneWidth * 1.8;
+                const opacityFactor = Math.pow(Math.min(1, distance / maxVisibilityDistance), 1.5);
+                const targetOpacity = Math.max(0, 1 - opacityFactor);
+                plane.material.opacity = THREE.MathUtils.lerp(plane.material.opacity, targetOpacity, 0.1);
+
+                const rotationYFactor = 0.04;
+                plane.rotation.y = planeTargetX * rotationYFactor;
+
+                 const targetScale = (plane === hoveredPlane) ? hoverScale : defaultScale;
+                 plane.scale.lerp(new THREE.Vector3(targetScale, targetScale, 1), 0.15);
+
+                 const zFactor = 0.1;
+                 plane.position.z = -distance * zFactor;
+
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        loadTextures();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+header {
+    background-color: #f8f9fa;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #dee2e6;
+}
+
+header .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #007bff;
+    padding: 5px 0;
+}
+
+header nav ul li a:hover,
+header nav ul li a.active {
+    border-bottom: 2px solid #007bff;
+    color: #0056b3;
+}
+
+.burger-menu {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.burger-menu span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 5px 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 30px 20px;
+    margin-top: auto;
+}
+
+@media (max-width: 768px) {
+    header nav {
+        display: none;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        background-color: #f8f9fa;
+        border-top: 1px solid #dee2e6;
+        z-index: 1000;
+    }
+
+    header nav.active {
+        display: block;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    header nav ul li {
+        width: 100%;
+        text-align: center;
+    }
+
+     header nav ul li a {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+    }
+
+    header nav ul li a:hover,
+    header nav ul li a.active {
+        border-bottom: 1px solid #eee;
+        background-color: #e9ecef;
+    }
+
+    .burger-menu {
+        display: block;
+    }
+}
+
+.services-content h1 {
+    text-align: center;
+    font-size: 2.4em;
+    margin-bottom: 40px;
+    color: #007bff;
+    line-height: 1.3;
+}
+
+.service-section {
+    margin-bottom: 50px;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.service-section h2 {
+    text-align: center;
+    font-size: 2em;
+    color: #343a40;
+    margin-bottom: 25px;
+}
+
+.trust-section p {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 1.1em;
+    color: #555;
+}
+
+.geography-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: center;
+}
+
+.geography-content p {
+    flex: 1;
+    min-width: 300px;
+    line-height: 1.6;
+}
+
+.map-placeholder {
+    flex: 0 0 350px;
+    height: 250px;
+    background-color: #e9ecef;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+}
+
+.arsenal-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.arsenal-text {
+    flex: 1;
+    min-width: 350px;
+}
+
+.arsenal-text p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.tech-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 15px 0;
+}
+
+.tech-list li {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    margin-bottom: 8px;
+    border-left: 3px solid #28a745;
+    border-radius: 4px;
+}
+
+.gallery-placeholder {
+    flex: 1;
+    min-width: 300px;
+    min-height: 280px;
+    background-color: #e9ecef;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6c757d;
+}
+.gallery-placeholder::before {
+    content: 'Галерея Фото/Видео';
+}
+
+.advantages-list {
+    list-style: disc;
+    padding-left: 20px;
+    margin-bottom: 25px;
+}
+
+.advantages-list li {
+    margin-bottom: 12px;
+    line-height: 1.6;
+    font-size: 1.05em;
+}
+
+.pricing-note {
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-left: 5px solid #ffc107;
+    padding: 15px 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-size: 1em;
+    color: #856404;
+}
+
+.pricing-note strong {
+    color: #856404;
+}
+
+.cta-section {
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+}
+
+.cta-section h2 {
+    color: white;
+    margin-bottom: 20px;
+}
+
+.cta-buttons button {
+    margin: 10px;
+    background-color: #fff;
+    color: #007bff;
+    border-color: #fff;
+    padding: 12px 25px;
+    font-size: 1.1em;
+}
+
+.cta-buttons button:hover {
+    background-color: #f0f0f0;
+    border-color: #f0f0f0;
+    color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .geography-content,
+    .arsenal-content {
+        flex-direction: column;
+    }
+    .map-placeholder,
+    .gallery-placeholder {
+        width: 100%;
+        max-width: 400px;
+        margin: 20px auto 0 auto;
+    }
+}
