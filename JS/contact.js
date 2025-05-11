@@ -1,33 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Регистрируем плагины GSAP
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     
-    // Создаем пространство имен для управления анимациями
     const Animations = {};
     const UI = {};
     
-    // =========================
-    // ПРЕЛОАДЕР И ИНИЦИАЛИЗАЦИЯ
-    // =========================
-    
-    // Функция инициализации всех компонентов
     const initPage = () => {
-      // Анимация прелоадера
       const preloader = document.querySelector('.preloader');
       const preloaderQuote = document.querySelector('.preloader-quote');
       const preloaderBar = document.querySelector('.preloader-bar');
       
-      // Сначала показываем текст и прогресс-бар
       const preloaderTimeline = gsap.timeline({
         onComplete: () => {
-          // После завершения начальной анимации скрываем прелоадер
           gsap.to(preloader, {
             yPercent: -100,
             duration: 1.2,
             ease: "power3.inOut",
             onComplete: () => {
-              // Инициализация всех остальных анимаций
               initAnimations();
+              preloader.style.display = 'none';
             }
           });
         }
@@ -36,96 +26,67 @@ document.addEventListener('DOMContentLoaded', () => {
       preloaderTimeline
         .to(preloaderQuote, {
           opacity: 1,
-          duration: 1,
+          duration: 0.8,
           ease: "power3.out"
         })
         .to(preloaderBar, {
           scaleX: 1,
-          duration: 1.5,
+          duration: 1.2,
           ease: "power2.inOut"
-        }, "-=0.5");
+        }, "-=0.3");
       
-      // Отображаем тело документа
       gsap.to('body', { 
         opacity: 1, 
         duration: 0.1
       });
     };
     
-    // =========================
-    // АНИМАЦИИ
-    // =========================
-    
-    // Инициализация всех анимаций
     const initAnimations = () => {
-      // Инициализируем компоненты UI
       UI.initScrollProgress();
       UI.initMobileMenu();
       
-      // Запускаем анимации
       Animations.headerAnimation();
-      Animations.introAnimation();
-      Animations.sectionsAnimation();
       Animations.parallaxEffects();
       Animations.marqueeAnimation();
-    };
-    
-    // Анимации для интро-секции
-    Animations.introAnimation = () => {
-      const introTitle = document.querySelector('.intro-title');
       
-      if (introTitle) {
-        // Разделяем текст на символы для анимации
-        const splitTitle = new SplitType(introTitle, {
-          types: 'chars, words',
-          tagName: 'span'
-        });
-        
-        // Анимация заголовка
-        const titleChars = splitTitle.chars;
-        gsap.to(titleChars, {
-          y: 0,
-          stagger: 0.02,
-          duration: 1.2,
-          ease: "power3.out",
-          delay: 0.2
-        });
-        
-        // Анимация описания
-        gsap.to('.paragraph-reveal', {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          delay: 0.8,
-          ease: "power3.out"
-        });
-        
-        // Анимация индикатора скролла
-        gsap.to('.scroll-indicator', {
-          opacity: 1,
-          duration: 1,
-          delay: 1.2,
-          ease: "power3.out"
-        });
-        
-        // Анимация фонового изображения
-        gsap.to('.background-image img', {
-          scale: 1,
-          duration: 2,
-          ease: "power2.out"
-        });
-      }
+      document.querySelectorAll('.intro-title .char, .paragraph-reveal, .scroll-indicator, .background-image img, .title-reveal, .contact-item, .map-container').forEach(el => {
+        if (el.classList.contains('char')) {
+          el.style.transform = 'translateY(0)';
+          el.style.opacity = '1';
+        } else if (el.classList.contains('paragraph-reveal')) {
+          el.style.transform = 'translateY(0)';
+          el.style.opacity = '1';
+        } else if (el.classList.contains('scroll-indicator')) {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        } else if (el.matches('.background-image img')) {
+          el.style.scale = '1';
+          el.style.opacity = '0.2';
+        } else if (el.classList.contains('title-reveal')) {
+          el.style.opacity = '1';
+        } else if (el.classList.contains('contact-item')) {
+          el.style.opacity = '1';
+          el.style.transform = 'translateX(0)';
+        } else if (el.classList.contains('map-container')) {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        }
+      });
     };
     
-    // Анимации для хедера
+    Animations.introAnimation = () => {};
+    
     Animations.headerAnimation = () => {
       const header = document.querySelector('.site-header');
       
       if (header) {
         ScrollTrigger.create({
           start: 'top -50',
+          toggleClass: {
+            targets: header,
+            className: "scrolled"
+          },
           onEnter: () => {
-            header.classList.add('scrolled');
             gsap.to(header, {
               backgroundColor: 'rgba(247, 245, 241, 0.95)',
               backdropFilter: 'blur(10px)',
@@ -136,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
           },
           onLeaveBack: () => {
-            header.classList.remove('scrolled');
             gsap.to(header, {
               backgroundColor: 'transparent',
               backdropFilter: 'blur(0px)',
@@ -150,74 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
     
-    // Анимации для секций
-    Animations.sectionsAnimation = () => {
-      // Анимация заголовков секций
-      gsap.utils.toArray('.title-reveal').forEach(title => {
-        const titleAnim = gsap.timeline({
-          scrollTrigger: {
-            trigger: title,
-            start: 'top 80%',
-            once: true
-          }
-        });
-        
-        titleAnim
-          .to(title, { opacity: 1, duration: 0 })
-          .to(title.querySelector('::before') || title, {
-            xPercent: 100,
-            duration: 1,
-            ease: 'power3.inOut'
-          });
-      });
-      
-      // Анимация параграфов
-      gsap.utils.toArray('.paragraph-reveal:not(.intro-description .paragraph-reveal)').forEach(paragraph => {
-        gsap.to(paragraph, {
-          y: 0,
-          opacity: 1,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: paragraph,
-            start: 'top 85%'
-          }
-        });
-      });
-      
-      // Анимация контактной информации
-      gsap.utils.toArray('.contact-item').forEach((item, i) => {
-        gsap.from(item, {
-          x: -30,
-          opacity: 0,
-          duration: 0.8,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: item,
-            start: 'top 85%'
-          },
-          delay: i * 0.1
-        });
-      });
-      
-      // Анимация карты
-      gsap.to('.map-container', {
-        y: 0,
-        opacity: 1,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.map-container',
-          start: 'top 85%'
-        }
-      });
-    };
+    Animations.sectionsAnimation = () => {};
     
-    // Параллакс эффекты при скролле
     Animations.parallaxEffects = () => {
-      // Параллакс для фонового изображения
       gsap.to('.background-image img', {
-        yPercent: 30,
+        yPercent: 20,
         ease: 'none',
         scrollTrigger: {
           trigger: '.intro-section',
@@ -228,32 +125,31 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
     
-    // Анимация бегущей строки
     Animations.marqueeAnimation = () => {
       const marquee = document.querySelector('.text-marquee');
       if (!marquee) return;
       
-      // Дополнительный эффект при наведении
+      const content = marquee.querySelectorAll('.marquee-content');
+      
+      gsap.to(content, {
+        xPercent: -100,
+        repeat: -1,
+        duration: 30,
+        ease: "linear",
+        modifiers: {
+          xPercent: gsap.utils.unitize(x => parseFloat(x) % 100)
+        }
+      });
+      
       marquee.addEventListener('mouseenter', () => {
-        gsap.to('.marquee-content', {
-          animationPlayState: 'paused',
-          duration: 0.2
-        });
+        gsap.to(content, { timeScale: 0.2, duration: 0.2 });
       });
       
       marquee.addEventListener('mouseleave', () => {
-        gsap.to('.marquee-content', {
-          animationPlayState: 'running',
-          duration: 0.2
-        });
+        gsap.to(content, { timeScale: 1, duration: 0.2 });
       });
     };
 
-    // =========================
-    // КОМПОНЕНТЫ ИНТЕРФЕЙСА
-    // =========================
-    
-    // Индикатор прогресса скролла
     UI.initScrollProgress = () => {
       const scrollBar = document.querySelector('.scroll-bar');
       
@@ -271,27 +167,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
     
-    // Мобильное меню
     UI.initMobileMenu = () => {
       const menuToggle = document.querySelector('.menu-toggle');
       const mobileMenu = document.querySelector('.mobile-menu');
       const menuLines = document.querySelectorAll('.menu-line');
+      const body = document.body;
       let menuOpen = false;
       
       if (!menuToggle || !mobileMenu) return;
       
       menuToggle.addEventListener('click', () => {
         if (!menuOpen) {
-          // Открываем меню
+          body.classList.add('menu-open');
+          
           gsap.to(mobileMenu, {
             opacity: 1,
             visibility: 'visible',
             pointerEvents: 'all',
-            duration: 0.5,
+            duration: 0.4,
             ease: 'power3.out'
           });
           
-          // Анимация гамбургер-иконки
           gsap.to(menuLines[0], {
             y: 9,
             rotation: 45,
@@ -311,44 +207,44 @@ document.addEventListener('DOMContentLoaded', () => {
             ease: 'power2.out'
           });
           
-          // Анимация появления пунктов меню
-          gsap.fromTo('.mobile-nav-links li', {
-            y: 20,
-            opacity: 0
-          }, {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.05,
-            ease: 'power3.out',
-            delay: 0.2
-          });
+          gsap.fromTo('.mobile-nav-links li', 
+            { y: 20, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.5,
+              stagger: 0.05,
+              ease: 'power3.out',
+              delay: 0.1
+            }
+          );
           
-          // Анимация контактов
-          gsap.fromTo('.menu-contact a', {
-            y: 20,
-            opacity: 0
-          }, {
-            y: 0,
-            opacity: 1,
-            duration: 0.6,
-            stagger: 0.05,
-            ease: 'power3.out',
-            delay: 0.4
-          });
+          gsap.fromTo('.menu-contact a', 
+            { y: 20, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.5,
+              stagger: 0.05,
+              ease: 'power3.out',
+              delay: 0.3
+            }
+          );
           
           menuOpen = true;
         } else {
-          // Закрываем меню
+          body.classList.remove('menu-open');
+          
           gsap.to(mobileMenu, {
             opacity: 0,
-            visibility: 'hidden',
-            pointerEvents: 'none',
-            duration: 0.5,
-            ease: 'power3.out'
+            duration: 0.4,
+            ease: 'power3.out',
+            onComplete: () => {
+              mobileMenu.style.visibility = 'hidden';
+              mobileMenu.style.pointerEvents = 'none';
+            }
           });
           
-          // Анимация гамбургер-иконки
           gsap.to(menuLines[0], {
             y: 0,
             rotation: 0,
@@ -372,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       
-      // Закрытие меню при клике на пункт меню
       document.querySelectorAll('.mobile-link').forEach(link => {
         link.addEventListener('click', () => {
           if (menuOpen) {
@@ -382,6 +277,5 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
 
-    // Запускаем инициализацию страницы
     initPage();
-  }); 
+  });
