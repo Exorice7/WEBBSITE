@@ -47,19 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
       
       Animations.headerAnimation();
       Animations.parallaxEffects();
-      Animations.marqueeAnimation();
       Animations.footerAnimation();
       
-      document.querySelectorAll('.intro-title .char, .paragraph-reveal, .scroll-indicator, .background-image img, .title-reveal, .contact-item, .map-container').forEach(el => {
+      document.querySelectorAll('.intro-title .char, .background-image img, .title-reveal, .contact-item, .map-container').forEach(el => {
         if (el.classList.contains('char')) {
           el.style.transform = 'translateY(0)';
           el.style.opacity = '1';
-        } else if (el.classList.contains('paragraph-reveal')) {
-          el.style.transform = 'translateY(0)';
-          el.style.opacity = '1';
-        } else if (el.classList.contains('scroll-indicator')) {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
         } else if (el.matches('.background-image img')) {
           el.style.scale = '1';
           el.style.opacity = '0.2';
@@ -74,8 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     };
-    
-    Animations.introAnimation = () => {};
     
     Animations.headerAnimation = () => {
       const header = document.querySelector('.site-header');
@@ -106,8 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Анимация появления элементов хедера
         const headerElements = [
           '.logo-text',
-          '.nav-link',
-          '.contact-link'
+          '.nav-link'
         ];
         
         gsap.fromTo(headerElements, 
@@ -176,8 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
     
-    Animations.sectionsAnimation = () => {};
-    
     Animations.parallaxEffects = () => {
       gsap.to('.background-image img', {
         yPercent: 20,
@@ -190,31 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     };
-    
-    Animations.marqueeAnimation = () => {
-      const marquee = document.querySelector('.text-marquee');
-      if (!marquee) return;
-      
-      const content = marquee.querySelectorAll('.marquee-content');
-      
-      gsap.to(content, {
-        xPercent: -100,
-        repeat: -1,
-        duration: 30,
-        ease: "linear",
-        modifiers: {
-          xPercent: gsap.utils.unitize(x => parseFloat(x) % 100)
-        }
-      });
-      
-      marquee.addEventListener('mouseenter', () => {
-        gsap.to(content, { timeScale: 0.2, duration: 0.2 });
-      });
-      
-      marquee.addEventListener('mouseleave', () => {
-        gsap.to(content, { timeScale: 1, duration: 0.2 });
-      });
-    };
 
     Animations.footerAnimation = () => {
       // Анимация появления футера при скролле
@@ -224,8 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const footerItems = [
         '.footer-logo',
         '.footer-tagline',
-        '.footer-nav-column',
-        '.footer-bottom'
+        '.copyright'
       ];
 
       ScrollTrigger.create({
@@ -233,18 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
         start: 'top 90%',
         once: true,
         onEnter: () => {
-          // Анимация линии под логотипом
-          gsap.fromTo('.logo-accent', 
-            { scaleX: 0, opacity: 0 },
-            { 
-              scaleX: 1, 
-              opacity: 1, 
-              duration: 0.8,
-              ease: 'power3.out',
-              delay: 0.2
-            }
-          );
-          
           // Анимация элементов в стиле каскада
           gsap.fromTo(footerItems, 
             { y: 20, opacity: 0 },
@@ -256,41 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
               ease: 'power2.out'
             }
           );
-          
-          // Анимация ссылок меню
-          gsap.fromTo('.footer-link', 
-            { y: 10, opacity: 0 },
-            { 
-              y: 0, 
-              opacity: 1, 
-              stagger: 0.05,
-              duration: 0.5,
-              delay: 0.3,
-              ease: 'power1.out'
-            }
-          );
         }
-      });
-      
-      // Интерактивный эффект при наведении на меню футера
-      const footerLinks = document.querySelectorAll('.footer-link');
-      
-      footerLinks.forEach(link => {
-        link.addEventListener('mouseenter', () => {
-          gsap.to(link.querySelector('::before') || link, { 
-            scale: 1.2, 
-            ease: 'elastic.out(1, 0.5)', 
-            duration: 0.6
-          });
-        });
-        
-        link.addEventListener('mouseleave', () => {
-          gsap.to(link.querySelector('::before') || link, { 
-            scale: 1, 
-            ease: 'power1.out', 
-            duration: 0.3
-          });
-        });
       });
     };
 
