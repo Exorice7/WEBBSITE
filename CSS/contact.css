@@ -782,7 +782,7 @@ section {
 }
 
 .map-wrapper .ymaps-2-1-79-ground-pane {
-  filter: grayscale(0.3) brightness(1.02) contrast(1.05);
+  filter: brightness(1.05) contrast(1.1);
 }
 
 .map-wrapper .ymaps-2-1-79-map {

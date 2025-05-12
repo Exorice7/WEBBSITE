@@ -53,7 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const myMap = new ymaps.Map('yandex-map', {
           center: [43.820213, 44.032360],
           zoom: 16,
-          controls: [] // Отключаем все элементы управления
+          controls: [], // Отключаем все элементы управления
+          type: 'yandex#hybrid' // Гибридный режим (спутник + дороги)
         }, {
           suppressMapOpenBlock: true, // Скрываем плашку "Открыть в Яндекс.Картах"
           yandexMapDisablePoiInteractivity: true, // Отключаем POI
