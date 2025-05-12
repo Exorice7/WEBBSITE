@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
       Animations.headerAnimation();
       Animations.parallaxEffects();
       Animations.marqueeAnimation();
+      Animations.footerAnimation();
       
       document.querySelectorAll('.intro-title .char, .paragraph-reveal, .scroll-indicator, .background-image img, .title-reveal, .contact-item, .map-container').forEach(el => {
         if (el.classList.contains('char')) {
@@ -88,9 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           onEnter: () => {
             gsap.to(header, {
-              backgroundColor: 'rgba(247, 245, 241, 0.95)',
-              backdropFilter: 'blur(10px)',
-              borderBottom: '1px solid rgba(144, 108, 70, 0.1)',
               padding: '1rem 2rem',
               duration: 0.3,
               ease: 'power2.out'
@@ -98,14 +96,82 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           onLeaveBack: () => {
             gsap.to(header, {
-              backgroundColor: 'transparent',
-              backdropFilter: 'blur(0px)',
-              borderBottom: '1px solid rgba(144, 108, 70, 0)',
-              padding: '2rem 2rem',
+              padding: '1.5rem 2rem',
               duration: 0.3,
               ease: 'power2.out'
             });
           }
+        });
+        
+        // Анимация появления элементов хедера
+        const headerElements = [
+          '.logo-text',
+          '.nav-link',
+          '.contact-link'
+        ];
+        
+        gsap.fromTo(headerElements, 
+          { y: -20, opacity: 0 },
+          { 
+            y: 0, 
+            opacity: 1, 
+            stagger: 0.05,
+            duration: 0.6,
+            ease: 'power2.out',
+            delay: 0.2
+          }
+        );
+        
+        // Анимация активной ссылки
+        const activeLink = document.querySelector('.nav-link.active');
+        if (activeLink) {
+          gsap.to(activeLink.querySelector('.nav-dot'), {
+            opacity: 1,
+            scale: 1,
+            duration: 0.4,
+            delay: 0.8
+          });
+          
+          gsap.to(activeLink, {
+            color: 'var(--color-accent)',
+            duration: 0.4,
+            delay: 0.8
+          });
+          
+          gsap.fromTo(activeLink.querySelector('::after'),
+            { scaleX: 0 },
+            { 
+              scaleX: 1, 
+              duration: 0.5,
+              delay: 0.9,
+              ease: 'power2.out'
+            }
+          );
+        }
+        
+        // Интерактивный эффект при наведении на пункты меню
+        const navLinks = document.querySelectorAll('.nav-link:not(.active)');
+        
+        navLinks.forEach(link => {
+          const dot = link.querySelector('.nav-dot');
+          
+          link.addEventListener('mouseenter', () => {
+            gsap.to(dot, { 
+              opacity: 1,
+              scale: 1,
+              duration: 0.3,
+              ease: 'power1.out'
+            });
+          });
+          
+          link.addEventListener('mouseleave', () => {
+            gsap.to(dot, { 
+              opacity: 0,
+              scale: 0,
+              duration: 0.3,
+              ease: 'power1.out'
+            });
+          });
         });
       }
     };
@@ -147,6 +213,84 @@ document.addEventListener('DOMContentLoaded', () => {
       
       marquee.addEventListener('mouseleave', () => {
         gsap.to(content, { timeScale: 1, duration: 0.2 });
+      });
+    };
+
+    Animations.footerAnimation = () => {
+      // Анимация появления футера при скролле
+      const footerEl = document.querySelector('.site-footer');
+      if (!footerEl) return;
+
+      const footerItems = [
+        '.footer-logo',
+        '.footer-tagline',
+        '.footer-nav-column',
+        '.footer-bottom'
+      ];
+
+      ScrollTrigger.create({
+        trigger: footerEl,
+        start: 'top 90%',
+        once: true,
+        onEnter: () => {
+          // Анимация линии под логотипом
+          gsap.fromTo('.logo-accent', 
+            { scaleX: 0, opacity: 0 },
+            { 
+              scaleX: 1, 
+              opacity: 1, 
+              duration: 0.8,
+              ease: 'power3.out',
+              delay: 0.2
+            }
+          );
+          
+          // Анимация элементов в стиле каскада
+          gsap.fromTo(footerItems, 
+            { y: 20, opacity: 0 },
+            { 
+              y: 0, 
+              opacity: 1, 
+              stagger: 0.1,
+              duration: 0.7,
+              ease: 'power2.out'
+            }
+          );
+          
+          // Анимация ссылок меню
+          gsap.fromTo('.footer-link', 
+            { y: 10, opacity: 0 },
+            { 
+              y: 0, 
+              opacity: 1, 
+              stagger: 0.05,
+              duration: 0.5,
+              delay: 0.3,
+              ease: 'power1.out'
+            }
+          );
+        }
+      });
+      
+      // Интерактивный эффект при наведении на меню футера
+      const footerLinks = document.querySelectorAll('.footer-link');
+      
+      footerLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+          gsap.to(link.querySelector('::before') || link, { 
+            scale: 1.2, 
+            ease: 'elastic.out(1, 0.5)', 
+            duration: 0.6
+          });
+        });
+        
+        link.addEventListener('mouseleave', () => {
+          gsap.to(link.querySelector('::before') || link, { 
+            scale: 1, 
+            ease: 'power1.out', 
+            duration: 0.3
+          });
+        });
       });
     };
 
