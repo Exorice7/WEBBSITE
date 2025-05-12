@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Создаем карту с оптимизированными настройками
         const myMap = new ymaps.Map('yandex-map', {
           center: [43.820213, 44.032360],
-          zoom: 15,
+          zoom: 16,
           controls: [],
           type: 'yandex#hybrid'
         }, {
