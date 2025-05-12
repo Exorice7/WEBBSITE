@@ -6,13 +6,35 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const initPage = () => {
       const preloader = document.querySelector('.preloader');
-      const preloaderQuote = document.querySelector('.preloader-quote p');
+      const preloaderContent = document.querySelector('.preloader-content');
+      const preloaderLogo = document.querySelector('.logo-preloader');
+      const preloaderQuote = document.querySelector('.preloader-quote');
+      const preloaderQuoteText = document.querySelector('.preloader-quote p');
       const preloaderProgress = document.querySelector('.preloader-progress');
       const preloaderBar = document.querySelector('.preloader-bar');
       
       const splitTexts = document.querySelectorAll('.split-text');
       splitTexts.forEach(text => {
         new SplitType(text, { types: 'chars, words', tagName: 'span' });
+      });
+      
+      if (preloaderQuoteText) {
+        new SplitType(preloaderQuoteText, { types: 'chars', tagName: 'span' });
+      }
+      
+      if (preloaderLogo) {
+        new SplitType(preloaderLogo, { types: 'chars', tagName: 'span' });
+        gsap.set(preloaderLogo.querySelectorAll('.char'), { 
+          opacity: 0, 
+          y: 15
+        });
+      }
+      
+      gsap.set(preloaderQuote, { opacity: 1 });
+      gsap.set(preloaderQuoteText, { opacity: 1 });
+      gsap.set(preloaderQuoteText.querySelectorAll('.char'), { 
+        opacity: 0, 
+        y: 20 
       });
       
       const preloaderTimeline = gsap.timeline({
@@ -30,23 +52,32 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       
       preloaderTimeline
-        .to(preloaderQuote, {
+        .to(preloaderLogo.querySelectorAll('.char'), {
           opacity: 1,
           y: 0,
-          duration: 0.8,
+          duration: 0.5,
+          stagger: 0.03,
           ease: "power3.out"
         })
+        .to(preloaderQuoteText.querySelectorAll('.char'), {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.025,
+          ease: "power3.out"
+        }, "-=0.2")
         .to(preloaderProgress, {
           opacity: 1,
           y: 0,
           duration: 0.6,
           ease: "power3.out"
-        }, "-=0.4")
+        }, "-=0.3")
         .to(preloaderBar, {
           scaleX: 1,
-          duration: 1.2,
+          duration: 1.5,
           ease: "power2.inOut"
-        }, "-=0.3");
+        }, "-=0.3")
+        .to({}, { duration: 0.3 });
       
       gsap.to('body', { 
         opacity: 1, 

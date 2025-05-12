@@ -178,13 +178,46 @@ button {
   padding: 0 2rem;
 }
 
+.logo-preloader {
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: 1.2rem;
+  letter-spacing: 0.15em;
+  color: var(--color-text);
+  margin-bottom: 2.5rem;
+  position: relative;
+  text-align: center;
+}
+
+.logo-preloader::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 2px;
+  background-color: var(--color-accent);
+}
+
 .preloader-quote {
   max-width: 800px;
   text-align: center;
-  overflow: hidden;
-  opacity: 0;
+  overflow: visible;
   margin-bottom: 3rem;
   padding: 0 2rem;
+  position: relative;
+}
+
+.preloader-quote::before {
+  content: '';
+  position: absolute;
+  width: 40px;
+  height: 1px;
+  background-color: var(--color-accent);
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .preloader-quote p {
@@ -193,18 +226,20 @@ button {
   font-style: italic;
   line-height: 1.4;
   color: var(--color-text);
-  transform: translateY(30px);
   will-change: transform, opacity;
+}
+
+.preloader-quote p .char {
+  display: inline-block;
 }
 
 .preloader-progress {
   width: clamp(200px, 40vw, 400px);
-  height: 1px;
+  height: 2px;
   background-color: var(--color-border);
   position: relative;
   overflow: hidden;
-  opacity: 0;
-  transform: translateY(30px);
+  border-radius: 1px;
 }
 
 .preloader-bar {
@@ -217,6 +252,7 @@ button {
   transform: scaleX(0);
   transform-origin: left;
   will-change: transform;
+  box-shadow: 0 0 8px rgba(144, 108, 70, 0.5);
 }
 
 .noise-filter {
