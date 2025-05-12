@@ -16,31 +16,33 @@
   <link rel="stylesheet" href="../CSS/contact.css">
 </head>
 <body>
+  <div class="cursor"></div>
+  <div class="cursor-follower"></div>
+
   <div class="preloader">
-    <div class="preloader-quote">
-      <p>«Нам доверяют самое ценное — убирать свой урожай»</p>
-    </div>
-    <div class="preloader-progress">
-      <span class="preloader-bar"></span>
+    <div class="preloader-content">
+      <div class="preloader-quote">
+        <p>«Нам доверяют самое ценное — убирать свой урожай»</p>
+      </div>
+      <div class="preloader-progress">
+        <span class="preloader-bar"></span>
+      </div>
     </div>
   </div>
 
-  <!-- Шумовой эффект -->
   <div class="noise-filter"></div>
   
-  <!-- Фиксированные элементы -->
   <div class="fixed-elements">
     <div class="scroll-progress">
       <div class="scroll-bar"></div>
     </div>
   </div>
 
-  <!-- Хедер -->
   <header class="site-header">
     <div class="header-container">
       <div class="header-left">
         <div class="header-logo">
-          <a href="index.html">
+          <a href="index.html" class="magnetic-element">
             <span class="logo-text">ИП ПРЫТКОВ М.А.</span>
             <span class="logo-accent"></span>
           </a>
@@ -50,19 +52,19 @@
         <div class="header-nav">
           <nav class="main-nav">
             <ul>
-              <li><a href="index.html" class="nav-link"><span class="nav-dot"></span>Главная</a></li>
-              <li><a href="about.html" class="nav-link"><span class="nav-dot"></span>О нас</a></li>
-              <li><a href="products.html" class="nav-link"><span class="nav-dot"></span>Продукция</a></li>
-              <li><a href="services.html" class="nav-link"><span class="nav-dot"></span>Услуги</a></li>
-              <li><a href="tech.html" class="nav-link"><span class="nav-dot"></span>Технологии</a></li>
-              <li><a href="partners.html" class="nav-link"><span class="nav-dot"></span>Партнерство</a></li>
-              <li><a href="contact.html" class="nav-link active"><span class="nav-dot"></span>Контакты</a></li>
+              <li><a href="index.html" class="nav-link magnetic-element"><span class="nav-dot"></span>Главная</a></li>
+              <li><a href="about.html" class="nav-link magnetic-element"><span class="nav-dot"></span>О нас</a></li>
+              <li><a href="products.html" class="nav-link magnetic-element"><span class="nav-dot"></span>Продукция</a></li>
+              <li><a href="services.html" class="nav-link magnetic-element"><span class="nav-dot"></span>Услуги</a></li>
+              <li><a href="tech.html" class="nav-link magnetic-element"><span class="nav-dot"></span>Технологии</a></li>
+              <li><a href="partners.html" class="nav-link magnetic-element"><span class="nav-dot"></span>Партнерство</a></li>
+              <li><a href="contact.html" class="nav-link active magnetic-element"><span class="nav-dot"></span>Контакты</a></li>
             </ul>
           </nav>
         </div>
       </div>
       <div class="header-right">
-        <div class="menu-toggle">
+        <div class="menu-toggle magnetic-element">
           <span class="menu-line"></span>
           <span class="menu-line"></span>
           <span class="menu-line"></span>
@@ -72,7 +74,6 @@
     <div class="header-backdrop"></div>
   </header>
 
-  <!-- Мобильное меню -->
   <div class="mobile-menu">
     <div class="menu-background"></div>
     <div class="menu-wrapper">
@@ -97,79 +98,176 @@
   </div>
 
   <main class="main-content">
-    <!-- Интро секция -->
-    <section class="intro-section">
-      <div class="intro-text-container">
-        <h1 class="intro-title" data-splitting>Связаться с нами</h1>
+    <section class="hero-section">
+      <div class="hero-container">
+        <div class="hero-content">
+          <h1 class="hero-title split-text">Свяжитесь с нами</h1>
+          <p class="hero-subtitle split-text">Мы всегда открыты для сотрудничества и новых идей</p>
+          
+          <div class="scroll-indicator">
+            <div class="scroll-line">
+              <span class="scroll-dot"></span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hero-visual">
+          <div class="image-mask">
+            <div class="image-wrapper">
+              <img src="https://images.unsplash.com/photo-1529511582893-2d7e684dd128?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2OTQ3MjY1NTl8&ixlib=rb-4.0.3&q=80&w=1080" alt="Поле золотой пшеницы">
+            </div>
+            <svg class="image-parallax-layer" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M0,0 L100,0 L100,100 L0,100 Z" vector-effect="non-scaling-stroke" />
+            </svg>
+          </div>
+        </div>
       </div>
-      <div class="intro-background">
-        <div class="background-image">
-          <div class="image-overlay"></div>
-          <img src="https://images.unsplash.com/photo-1529511582893-2d7e684dd128?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2OTQ3MjY1NTl8&ixlib=rb-4.0.3&q=80&w=1080" alt="Поле золотой пшеницы">
+      
+      <div class="hero-background">
+        <div class="grain-overlay"></div>
+        <div class="floating-shapes">
+          <div class="shape shape-1"></div>
+          <div class="shape shape-2"></div>
+          <div class="shape shape-3"></div>
         </div>
       </div>
     </section>
 
-    <!-- Секция контактной информации -->
     <section class="contact-section">
-      <div class="section-container">
+      <div class="section-wrapper">
         <div class="section-header">
-          <h2 class="title-reveal">Контактная информация</h2>
+          <span class="section-label anim-reveal">Контактная информация</span>
+          <h2 class="section-title split-text">Как с нами связаться</h2>
         </div>
-        
-        <div class="contact-layout">
-          <!-- Левая колонка с информацией -->
-          <div class="contact-content">
-            <div class="contact-info">
-              <div class="contact-grid">
-                <div class="contact-item">
-                  <div class="item-label">Адрес</div>
-                  <div class="item-content">
-                    <p>Пролетарское, Прохладненский р-н<br>Кабардино-Балкарская Республика</p>
-                  </div>
-                </div>
-                
-                <div class="contact-item">
-                  <div class="item-label">Телефон</div>
-                  <div class="item-content">
-                    <a href="tel:+79286928744" class="animated-link">+7 928 692-87-44</a>
-                  </div>
-                </div>
-                
-                <div class="contact-item">
-                  <div class="item-label">Email</div>
-                  <div class="item-content">
-                    <a href="mailto:prytkov-mihail@mail.ru" class="animated-link">prytkov-mihail@mail.ru</a>
-                  </div>
-                </div>
-                
-                <div class="contact-item">
-                  <div class="item-label">Рабочие часы</div>
-                  <div class="item-content">
-                    <p>Пн-Пт: 9:00 - 18:00<br>Сб-Вс: По договоренности</p>
-                  </div>
-                </div>
+
+        <div class="contact-grid">
+          <div class="contact-card anim-stagger" data-stagger="0">
+            <div class="card-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M19.5 10C19.5 17 12 21 12 21C12 21 4.5 17 4.5 10C4.5 6.13401 7.86 3 12 3C16.14 3 19.5 6.13401 19.5 10Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
               </div>
+              <h3 class="card-title">Адрес</h3>
             </div>
+            <div class="card-content">
+              <p>Пролетарское, Прохладненский р-н<br>Кабардино-Балкарская Республика</p>
+            </div>
+            <div class="card-hover-effect"></div>
+          </div>
+
+          <div class="contact-card anim-stagger" data-stagger="1">
+            <div class="card-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M14.5 6.5C15.2372 6.64382 15.9689 6.96892 16.5 7.5C17.0311 8.03108 17.3562 8.76284 17.5 9.5M15 3C16.5315 3.17014 17.9097 3.91107 19 5C20.0903 6.08893 20.8279 7.46869 21 9M20.9995 16.4767V19.1864C21.0037 20.2223 20.0723 21.0873 19.0265 20.9929C10.0001 21 3.00006 13.935 3.00713 4.96919C2.91294 3.92895 3.77364 3.00106 4.80817 3.00009H7.52331C7.96253 2.99577 8.38835 3.151 8.72138 3.43684C9.66819 4.24949 10.2772 7.00777 10.0429 8.10428C9.85994 8.96036 8.99696 9.55929 8.41026 10.1448C9.69864 12.4062 11.5747 14.2785 13.8405 15.5644C14.4272 14.9788 15.0274 14.1176 15.8851 13.935C16.9855 13.7008 19.7615 14.3106 20.5709 15.264C20.858 15.6021 21.0105 16.0337 20.9995 16.4767Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="card-title">Телефон</h3>
+            </div>
+            <div class="card-content">
+              <a href="tel:+79286928744" class="contact-link magnetic-element">+7 928 692-87-44</a>
+            </div>
+            <div class="card-hover-effect"></div>
+          </div>
+
+          <div class="contact-card anim-stagger" data-stagger="2">
+            <div class="card-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 7C3 5.89543 3.89543 5 5 5H19C20.1046 5 21 5.89543 21 7V17C21 18.1046 20.1046 19 19 19H5C3.89543 19 3 18.1046 3 17V7Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M3 7L12 13L21 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="card-title">Email</h3>
+            </div>
+            <div class="card-content">
+              <a href="mailto:prytkov-mihail@mail.ru" class="contact-link magnetic-element">prytkov-mihail@mail.ru</a>
+            </div>
+            <div class="card-hover-effect"></div>
+          </div>
+
+          <div class="contact-card anim-stagger" data-stagger="3">
+            <div class="card-header">
+              <div class="card-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 8V12L14 14M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <h3 class="card-title">Рабочие часы</h3>
+            </div>
+            <div class="card-content">
+              <p>Пн-Пт: 9:00 - 18:00<br>Сб-Вс: По договоренности</p>
+            </div>
+            <div class="card-hover-effect"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="map-section">
+      <div class="section-wrapper">
+        <div class="map-content">
+          <div class="map-info">
+            <span class="section-label anim-reveal">Местоположение</span>
+            <h2 class="section-title split-text">Где нас найти</h2>
+            <p class="section-description anim-reveal">Мы находимся в самом сердце Кабардино-Балкарии, в окружении плодородных полей и природной красоты. Приезжайте к нам обсудить сотрудничество или просто посмотреть, как растет качество.</p>
+            
+            <a href="https://yandex.ru/maps/-/CHrx5ZnG" class="btn-route magnetic-element" target="_blank">
+              <span class="btn-text">Построить маршрут</span>
+              <span class="btn-icon">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </a>
           </div>
           
-          <!-- Правая колонка с картой -->
-          <div class="contact-visual">
-            <div class="map-container">
-              <div class="map-wrapper">
-                <div id="yandex-map" style="width:100%; height:100%; min-height:450px;"></div>
+          <div class="map-visual">
+            <div class="map-frame-wrapper">
+              <div class="map-frame">
+                <div id="yandex-map"></div>
               </div>
-              <div class="map-controls">
-                <a href="https://yandex.ru/maps/-/CHrx5ZnG" class="map-link" target="_blank">
-                  <span>Построить маршрут</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                    <polyline points="15 3 21 3 21 9"></polyline>
-                    <line x1="10" y1="14" x2="21" y2="3"></line>
-                  </svg>
-                </a>
-              </div>
+              <div class="map-border-top"></div>
+              <div class="map-border-right"></div>
+              <div class="map-border-bottom"></div>
+              <div class="map-border-left"></div>
             </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="map-background">
+        <div class="grain-overlay"></div>
+        <div class="map-decorative-shape"></div>
+      </div>
+    </section>
+    
+    <section class="connect-section">
+      <div class="section-wrapper">
+        <div class="connect-content">
+          <h2 class="connect-title split-text">Начните сотрудничество с нами</h2>
+          <p class="connect-description anim-reveal">Нам доверяют самое ценное — убирать свой урожай.<br>Доверьтесь и вы.</p>
+          
+          <a href="tel:+79286928744" class="connect-cta magnetic-element">
+            <span class="cta-text">Позвонить сейчас</span>
+            <div class="cta-circle">
+              <span class="cta-arrow">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <div class="connect-background">
+        <div class="grain-overlay"></div>
+        <div class="connect-visual">
+          <div class="image-reveal">
+            <img src="https://images.unsplash.com/photo-1595841696677-6489ff3f8cd1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Золотые колосья пшеницы">
           </div>
         </div>
       </div>
@@ -177,9 +275,9 @@
   </main>
 
   <footer class="site-footer">
-    <div class="footer-container">
+    <div class="footer-wrapper">
       <div class="footer-content">
-        <div class="footer-left">
+        <div class="footer-branding">
           <div class="footer-logo">
             <span>ИП ПРЫТКОВ М.А.</span>
             <div class="logo-accent"></div>
@@ -187,11 +285,49 @@
           <div class="footer-tagline">
             <p>Качество, проверенное временем</p>
           </div>
-          <div class="copyright">
-            <p>&copy; 2024 ИП Прытков М.А.</p>
+        </div>
+        
+        <div class="footer-nav">
+          <div class="footer-nav-column">
+            <h3 class="footer-heading">Навигация</h3>
+            <ul class="footer-links">
+              <li><a href="index.html" class="footer-link magnetic-element">Главная</a></li>
+              <li><a href="about.html" class="footer-link magnetic-element">О нас</a></li>
+              <li><a href="products.html" class="footer-link magnetic-element">Продукция</a></li>
+              <li><a href="services.html" class="footer-link magnetic-element">Услуги</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-nav-column">
+            <h3 class="footer-heading">Информация</h3>
+            <ul class="footer-links">
+              <li><a href="tech.html" class="footer-link magnetic-element">Технологии</a></li>
+              <li><a href="partners.html" class="footer-link magnetic-element">Партнерство</a></li>
+              <li><a href="contact.html" class="footer-link magnetic-element">Контакты</a></li>
+            </ul>
           </div>
         </div>
+        
+        <div class="footer-contact">
+          <h3 class="footer-heading">Контакты</h3>
+          <ul class="footer-contact-list">
+            <li><a href="tel:+79286928744" class="footer-contact-link magnetic-element">+7 928 692-87-44</a></li>
+            <li><a href="mailto:prytkov-mihail@mail.ru" class="footer-contact-link magnetic-element">prytkov-mihail@mail.ru</a></li>
+            <li class="footer-address">Пролетарское, Прохладненский р-н, КБР</li>
+          </ul>
+        </div>
       </div>
+      
+      <div class="footer-bottom">
+        <div class="copyright">
+          <p>&copy; 2024 ИП Прытков М.А.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bg">
+      <div class="grain-overlay"></div>
+      <div class="footer-shape"></div>
     </div>
   </footer>
 

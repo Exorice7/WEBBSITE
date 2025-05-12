@@ -6,15 +6,21 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const initPage = () => {
       const preloader = document.querySelector('.preloader');
-      const preloaderQuote = document.querySelector('.preloader-quote');
+      const preloaderQuote = document.querySelector('.preloader-quote p');
+      const preloaderProgress = document.querySelector('.preloader-progress');
       const preloaderBar = document.querySelector('.preloader-bar');
+      
+      const splitTexts = document.querySelectorAll('.split-text');
+      splitTexts.forEach(text => {
+        new SplitType(text, { types: 'chars, words', tagName: 'span' });
+      });
       
       const preloaderTimeline = gsap.timeline({
         onComplete: () => {
           gsap.to(preloader, {
             yPercent: -100,
             duration: 1.2,
-            ease: "power3.inOut",
+            ease: "power3.out",
             onComplete: () => {
               initAnimations();
               preloader.style.display = 'none';
@@ -26,9 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
       preloaderTimeline
         .to(preloaderQuote, {
           opacity: 1,
+          y: 0,
           duration: 0.8,
           ease: "power3.out"
         })
+        .to(preloaderProgress, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power3.out"
+        }, "-=0.4")
         .to(preloaderBar, {
           scaleX: 1,
           duration: 1.2,
@@ -42,6 +55,9 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Инициализируем карту
       initYandexMap();
+      
+      // Инициализация кастомного курсора
+      UI.initCursor();
     };
     
     const initYandexMap = () => {
@@ -49,26 +65,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!mapContainer) return;
       
       ymaps.ready(function() {
-        // Создаем карту с минимальным набором опций
+        // Создаем карту с оптимизированными настройками
         const myMap = new ymaps.Map('yandex-map', {
           center: [43.820213, 44.032360],
-          zoom: 16,
-          controls: [], // Отключаем все элементы управления
-          type: 'yandex#hybrid' // Гибридный режим (спутник + дороги)
+          zoom: 15,
+          controls: [],
+          type: 'yandex#hybrid'
         }, {
-          suppressMapOpenBlock: true, // Скрываем плашку "Открыть в Яндекс.Картах"
-          yandexMapDisablePoiInteractivity: true, // Отключаем POI
+          suppressMapOpenBlock: true,
+          yandexMapDisablePoiInteractivity: true,
           searchControlProvider: 'yandex#search'
         });
         
-        // Отключаем зум колесиком мыши
+        // Отключаем поведения для лучшего UX
         myMap.behaviors.disable('scrollZoom');
-        // Отключаем все другие поведения
         myMap.behaviors.disable('dblClickZoom');
         myMap.behaviors.disable('rightMouseButtonMagnifier');
         myMap.behaviors.disable('multiTouch');
         
-        // Создаем метку
+        // Создаем метку с кастомным стилем
         const myPlacemark = new ymaps.Placemark([43.820213, 44.032360], {
           hintContent: 'ИП Прытков М.А.',
           balloonContentHeader: 'ИП Прытков М.А.',
@@ -83,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Добавляем метку на карту
         myMap.geoObjects.add(myPlacemark);
         
-        // Функция для скрытия элементов интерфейса Яндекс.Карт
+        // Функция для скрытия стандартных элементов интерфейса Яндекс.Карт
         const hideYandexElements = function() {
           const selectors = [
             '[class*="ymaps-2"][class*="copyright"]', 
@@ -115,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         };
         
-        // Запускаем функцию скрытия после инициализации карты и периодически
+        // Запускаем функцию скрытия в разные моменты для надежности
         setTimeout(hideYandexElements, 100);
         setTimeout(hideYandexElements, 500);
         setTimeout(hideYandexElements, 1000);
@@ -125,12 +140,12 @@ document.addEventListener('DOMContentLoaded', () => {
           setTimeout(hideYandexElements, 100);
         });
         
-        // Адаптация для мобильных
+        // Адаптация для мобильных устройств
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
           myMap.behaviors.disable('drag');
         }
         
-        // Скрываем logo
+        // Дополнительная попытка скрыть логотип
         try {
           const logoClass = Object.keys(myMap.container.getElement().querySelector('[class*="ymaps-2"][class*="logo"]').classList).find(cls => cls.includes('logo'));
           if (logoClass) {
@@ -142,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
           console.log('Не удалось скрыть logo');
         }
         
-        // Добавляем обработчик для периодической проверки
+        // Продолжаем мониторинг изменений DOM для скрытия элементов
         const observer = new MutationObserver(hideYandexElements);
         observer.observe(mapContainer, { childList: true, subtree: true });
       });
@@ -151,9 +166,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const initAnimations = () => {
       UI.initScrollProgress();
       UI.initMobileMenu();
+      UI.initHoverEffects();
+      UI.initMagneticElements();
       
       Animations.headerAnimation();
+      Animations.heroAnimation();
       Animations.parallaxEffects();
+      Animations.sectionAnimations();
+      Animations.cardInteractions();
       Animations.footerAnimation();
       
       document.querySelectorAll('.intro-title .char, .background-image img, .title-reveal, .contact-item, .map-container').forEach(el => {
@@ -215,7 +235,7 @@ document.addEventListener('DOMContentLoaded', () => {
             stagger: 0.05,
             duration: 0.6,
             ease: 'power2.out',
-            delay: 0.2
+            delay: 0.3
           }
         );
         
@@ -273,6 +293,51 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     };
     
+    Animations.heroAnimation = () => {
+      // Анимируем появление всех элементов героя
+      gsap.to('.hero-title .char', {
+        opacity: 1,
+        y: 0,
+        stagger: 0.015,
+        duration: 0.6,
+        ease: 'power2.out',
+        delay: 0.2
+      });
+      
+      gsap.to('.hero-subtitle .char', {
+        opacity: 1,
+        y: 0,
+        stagger: 0.01,
+        duration: 0.6,
+        ease: 'power2.out',
+        delay: 0.6
+      });
+      
+      gsap.to('.scroll-indicator', {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power2.out',
+        delay: 0.8
+      });
+      
+      gsap.to('.image-mask', {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        ease: 'power2.out',
+        delay: 0.4
+      });
+      
+      gsap.to('.image-wrapper img', {
+        scale: 1,
+        duration: 1.5,
+        ease: 'power2.out',
+        delay: 0.5
+      });
+    };
+
     Animations.parallaxEffects = () => {
       gsap.to('.background-image img', {
         yPercent: 20,
@@ -440,6 +505,329 @@ document.addEventListener('DOMContentLoaded', () => {
           if (menuOpen) {
             menuToggle.click();
           }
+        });
+      });
+    };
+
+    UI.initCursor = () => {
+      // Пропускаем на мобильных устройствах
+      if (window.innerWidth <= 768) return;
+      
+      const cursor = document.querySelector('.cursor');
+      const cursorFollower = document.querySelector('.cursor-follower');
+      
+      // Обновление позиции курсора
+      const updateCursorPosition = (e) => {
+        gsap.to(cursor, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.1,
+          ease: "power2.out"
+        });
+        
+        gsap.to(cursorFollower, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.4,
+          ease: "power2.out"
+        });
+      };
+      
+      // Обработка наведения на ссылки и кнопки
+      const handleLinkHover = (e) => {
+        cursor.classList.add('cursor-link');
+        cursorFollower.classList.add('cursor-active');
+      };
+      
+      const handleLinkLeave = (e) => {
+        cursor.classList.remove('cursor-link');
+        cursorFollower.classList.remove('cursor-active');
+      };
+      
+      // Слушатели событий
+      document.addEventListener('mousemove', updateCursorPosition);
+      
+      document.querySelectorAll('a, button, .magnetic-element').forEach(el => {
+        el.addEventListener('mouseenter', handleLinkHover);
+        el.addEventListener('mouseleave', handleLinkLeave);
+      });
+    };
+
+    UI.initMagneticElements = () => {
+      // Пропускаем на мобильных устройствах
+      if (window.innerWidth <= 768) return;
+      
+      const magneticElements = document.querySelectorAll('.magnetic-element');
+      
+      magneticElements.forEach(element => {
+        element.addEventListener('mousemove', (e) => {
+          const rect = element.getBoundingClientRect();
+          const centerX = rect.left + rect.width / 2;
+          const centerY = rect.top + rect.height / 2;
+          
+          const distanceX = e.clientX - centerX;
+          const distanceY = e.clientY - centerY;
+          
+          // Сила магнитного эффекта
+          const strength = 15; 
+          const magneticX = distanceX / rect.width * strength;
+          const magneticY = distanceY / rect.height * strength;
+          
+          gsap.to(element, {
+            x: magneticX,
+            y: magneticY,
+            duration: 0.3,
+            ease: 'power2.out'
+          });
+        });
+        
+        element.addEventListener('mouseleave', () => {
+          gsap.to(element, {
+            x: 0,
+            y: 0,
+            duration: 0.5,
+            ease: 'elastic.out(1, 0.3)'
+          });
+        });
+      });
+    };
+
+    UI.initHoverEffects = () => {
+      // Подсветка для карточек
+      const cards = document.querySelectorAll('.contact-card');
+      cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          gsap.to(card, {
+            y: -10,
+            duration: 0.4,
+            ease: 'power2.out',
+            boxShadow: 'var(--shadow-lg)'
+          });
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          gsap.to(card, {
+            y: 0,
+            duration: 0.4,
+            ease: 'power2.out',
+            boxShadow: 'var(--shadow-sm)'
+          });
+        });
+      });
+      
+      // Эффект для кнопки маршрута
+      const routeBtn = document.querySelector('.btn-route');
+      if (routeBtn) {
+        routeBtn.addEventListener('mouseenter', () => {
+          gsap.to(routeBtn.querySelector('.btn-icon'), {
+            x: 5,
+            duration: 0.4,
+            ease: 'power2.out'
+          });
+        });
+        
+        routeBtn.addEventListener('mouseleave', () => {
+          gsap.to(routeBtn.querySelector('.btn-icon'), {
+            x: 0,
+            duration: 0.4,
+            ease: 'power2.out'
+          });
+        });
+      }
+      
+      // Эффект для кнопки звонка
+      const ctaBtn = document.querySelector('.connect-cta');
+      if (ctaBtn) {
+        ctaBtn.addEventListener('mouseenter', () => {
+          gsap.to(ctaBtn.querySelector('.cta-circle'), {
+            x: 5,
+            duration: 0.4,
+            ease: 'power2.out',
+            backgroundColor: 'rgba(255, 255, 255, 0.3)'
+          });
+        });
+        
+        ctaBtn.addEventListener('mouseleave', () => {
+          gsap.to(ctaBtn.querySelector('.cta-circle'), {
+            x: 0,
+            duration: 0.4,
+            ease: 'power2.out',
+            backgroundColor: 'rgba(255, 255, 255, 0.2)'
+          });
+        });
+      }
+    };
+
+    Animations.sectionAnimations = () => {
+      // Общая функция для анимации заголовков секций
+      const animateSectionTitle = (section) => {
+        const title = section.querySelector('.section-title');
+        const label = section.querySelector('.section-label');
+        const description = section.querySelector('.section-description');
+        const btn = section.querySelector('.btn-route, .connect-cta');
+        
+        if (title) {
+          gsap.to(title.querySelectorAll('.char'), {
+            opacity: 1,
+            y: 0,
+            stagger: 0.01,
+            duration: 0.6,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: title,
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            }
+          });
+        }
+        
+        if (label) {
+          gsap.to(label, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: label,
+              start: 'top 90%',
+              toggleActions: 'play none none none'
+            }
+          });
+        }
+        
+        if (description) {
+          gsap.to(description, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: description,
+              start: 'top 85%',
+              toggleActions: 'play none none none'
+            }
+          });
+        }
+        
+        if (btn) {
+          gsap.to(btn, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: 'power2.out',
+            scrollTrigger: {
+              trigger: btn,
+              start: 'top 90%',
+              toggleActions: 'play none none none'
+            }
+          });
+        }
+      };
+      
+      // Применяем анимацию к каждой секции
+      const sections = document.querySelectorAll('section');
+      sections.forEach(section => {
+        animateSectionTitle(section);
+      });
+      
+      // Анимация карточек контактов
+      const contactCards = document.querySelectorAll('.contact-card');
+      contactCards.forEach(card => {
+        const delay = parseFloat(card.getAttribute('data-stagger') || 0) * 0.1;
+        
+        gsap.to(card, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+          delay,
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        });
+      });
+      
+      // Анимация блока с картой
+      gsap.to('.map-frame-wrapper', {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.map-visual',
+          start: 'top 85%',
+          toggleActions: 'play none none none'
+        }
+      });
+      
+      // Анимация границ карты
+      gsap.to('.map-border-top', {
+        scaleX: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.map-visual',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      });
+      
+      gsap.to('.map-border-right', {
+        scaleY: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+        delay: 0.2,
+        scrollTrigger: {
+          trigger: '.map-visual',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      });
+      
+      gsap.to('.map-border-bottom', {
+        scaleX: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+        delay: 0.4,
+        scrollTrigger: {
+          trigger: '.map-visual',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      });
+      
+      gsap.to('.map-border-left', {
+        scaleY: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+        delay: 0.6,
+        scrollTrigger: {
+          trigger: '.map-visual',
+          start: 'top 80%',
+          toggleActions: 'play none none none'
+        }
+      });
+    };
+
+    Animations.cardInteractions = () => {
+      const cards = document.querySelectorAll('.contact-card');
+      
+      cards.forEach(card => {
+        const hoverEffect = card.querySelector('.card-hover-effect');
+        
+        // Эффект перемещения градиента при движении мыши
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          const mouseX = Math.floor((x / rect.width) * 100);
+          const mouseY = Math.floor((y / rect.height) * 100);
+          
+          hoverEffect.style.setProperty('--mouse-x', `${mouseX}%`);
+          hoverEffect.style.setProperty('--mouse-y', `${mouseY}%`);
         });
       });
     };
