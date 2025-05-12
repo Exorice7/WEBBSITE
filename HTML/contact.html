@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <script src="https://api-maps.yandex.ru/2.1/?apikey=4a9a4f7c-d827-478e-82af-d853da453fe4&lang=ru_RU" type="text/javascript"></script>
   <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
   <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollToPlugin.min.js"></script>
@@ -156,12 +157,12 @@
           <div class="contact-visual">
             <div class="map-container">
               <div class="map-wrapper">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22926.309772335312!2d44.024781570637854!3d43.81894184342267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40f0c4c7431e1387%3A0x935bd5fc9207199a!2z0J_RgNC-0LvQtdGC0LDRgNGB0LrQvtC1LCDQmtCw0LHQsNGA0LTQuNC90L4t0JHQsNC70LrQsNGA0YHQutCw0Y8g0KDQtdGB0L8u!5e0!3m2!1sru!2sru!4v1698059705854!5m2!1sru!2sru" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div id="yandex-map" style="width:100%; height:100%; min-height:450px;"></div>
               </div>
               <div class="map-controls">
-                <a href="https://yandex.ru/maps/-/CDqqrYAA" class="map-link" target="_blank">
+                <a href="https://yandex.ru/maps/-/CHrx5ZnG" class="map-link" target="_blank">
                   <span>Построить маршрут</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                     <polyline points="15 3 21 3 21 9"></polyline>
                     <line x1="10" y1="14" x2="21" y2="3"></line>
