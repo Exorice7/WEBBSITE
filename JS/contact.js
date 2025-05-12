@@ -316,6 +316,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const title = section.querySelector('.section-title');
         const label = section.querySelector('.section-label');
         const description = section.querySelector('.section-description');
+        const btn = section.querySelector('.btn-route, .connect-cta');
         
         if (title) {
           ScrollTrigger.create({
@@ -357,6 +358,22 @@ document.addEventListener('DOMContentLoaded', () => {
             once: true,
             onEnter: () => {
               gsap.to(description, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: 'power2.out'
+              });
+            }
+          });
+        }
+        
+        if (btn) {
+          ScrollTrigger.create({
+            trigger: btn,
+            start: "top 90%",
+            once: true,
+            onEnter: () => {
+              gsap.to(btn, {
                 opacity: 1,
                 y: 0,
                 duration: 0.8,
