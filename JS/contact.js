@@ -17,6 +17,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Убеждаемся что body начинает показываться
       document.body.style.opacity = '1';
       
+      // Генерируем мобильное меню на основе основного меню
+      generateMobileMenu();
+      
       // Разбиваем текст для анимации - только один раз при загрузке
       const splitTexts = document.querySelectorAll('.split-text');
       splitTexts.forEach(text => {
@@ -133,6 +136,36 @@ document.addEventListener('DOMContentLoaded', () => {
       initYandexMap();
     };
     
+    // Функция для генерации мобильного меню на основе основного
+    const generateMobileMenu = () => {
+      const navLinks = document.querySelectorAll('.nav-links a');
+      const mobileNavContainer = document.querySelector('.mobile-nav-links');
+      
+      if (!navLinks.length || !mobileNavContainer) return;
+      
+      // Очищаем мобильное меню перед заполнением
+      mobileNavContainer.innerHTML = '';
+      
+      // Перебираем все ссылки из основного меню
+      navLinks.forEach(link => {
+        const isActive = link.classList.contains('active');
+        const navId = link.getAttribute('data-nav-id') || '';
+        const href = link.getAttribute('href');
+        const text = link.textContent.trim();
+        
+        // Создаем новый элемент для мобильного меню
+        const mobileItem = document.createElement('li');
+        mobileItem.innerHTML = `
+          <a href="${href}" class="mobile-link${isActive ? ' active' : ''}">
+            <span>${navId}</span>${text}
+          </a>
+        `;
+        
+        // Добавляем элемент в мобильное меню
+        mobileNavContainer.appendChild(mobileItem);
+      });
+    };
+    
     const initYandexMap = () => {
       const mapContainer = document.getElementById('yandex-map');
       if (!mapContainer) return;
@@ -201,33 +234,29 @@ document.addEventListener('DOMContentLoaded', () => {
               el.style.left = '-9999px';
             });
           });
+          
+          // Дополнительная попытка скрыть логотип
+          try {
+            const logoClass = Object.keys(myMap.container.getElement().querySelector('[class*="ymaps-2"][class*="logo"]').classList).find(cls => cls.includes('logo'));
+            if (logoClass) {
+              const style = document.createElement('style');
+              style.innerHTML = `.${logoClass} { display: none !important; }`;
+              document.head.appendChild(style);
+            }
+          } catch (e) {
+            console.log('Не удалось скрыть logo');
+          }
         };
         
-        // Запускаем функцию скрытия в разные моменты для надежности
-        setTimeout(hideYandexElements, 100);
-        setTimeout(hideYandexElements, 500);
-        setTimeout(hideYandexElements, 1000);
+        // Запускаем скрытие элементов один раз и мониторим изменения DOM
+        setTimeout(hideYandexElements, 300);
         
         // При изменении размера карты тоже скрываем элементы
-        myMap.container.events.add('sizechange', function() {
-          setTimeout(hideYandexElements, 100);
-        });
+        myMap.container.events.add('sizechange', hideYandexElements);
         
         // Адаптация для мобильных устройств
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
           myMap.behaviors.disable('drag');
-        }
-        
-        // Дополнительная попытка скрыть логотип
-        try {
-          const logoClass = Object.keys(myMap.container.getElement().querySelector('[class*="ymaps-2"][class*="logo"]').classList).find(cls => cls.includes('logo'));
-          if (logoClass) {
-            const style = document.createElement('style');
-            style.innerHTML = `.${logoClass} { display: none !important; }`;
-            document.head.appendChild(style);
-          }
-        } catch (e) {
-          console.log('Не удалось скрыть logo');
         }
         
         // Продолжаем мониторинг изменений DOM для скрытия элементов
@@ -239,7 +268,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Единая функция анимации основного контента - сильно ускоренная
     const animateMainContent = () => {
       // Инициализируем UI-компоненты только один раз
-      UI.initScrollProgress();
       UI.initMobileMenu();
       UI.initHoverEffects();
       UI.initMagneticElements();
@@ -543,10 +571,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
     
-    UI.initScrollProgress = () => {
-      // Пустая функция, т.к. логика перенесена в initScrollAnimations
-    };
-    
     UI.initMobileMenu = () => {
       const menuToggle = document.querySelector('.menu-toggle');
       const mobileMenu = document.querySelector('.mobile-menu');
@@ -680,47 +704,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
       
-      // Эффект для кнопки маршрута
-      const routeBtn = document.querySelector('.btn-route');
-      if (routeBtn) {
-        routeBtn.addEventListener('mouseenter', () => {
-          gsap.to(routeBtn.querySelector('.btn-icon'), {
-            x: 5,
-            duration: 0.4,
-            ease: 'power2.out'
-          });
+      // Эффект ховера для карточек с зависимостью от положения курсора
+      cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+          
+          const hoverEffect = card.querySelector('.card-hover-effect');
+          if (hoverEffect) {
+            gsap.to(hoverEffect, {
+              opacity: 1,
+              duration: 0.3
+            });
+          }
         });
         
-        routeBtn.addEventListener('mouseleave', () => {
-          gsap.to(routeBtn.querySelector('.btn-icon'), {
-            x: 0,
-            duration: 0.4,
-            ease: 'power2.out'
-          });
+        card.addEventListener('mouseleave', () => {
+          const hoverEffect = card.querySelector('.card-hover-effect');
+          if (hoverEffect) {
+            gsap.to(hoverEffect, {
+              opacity: 0,
+              duration: 0.3
+            });
+          }
         });
-      }
-      
-      // Эффект для кнопки звонка
-      const ctaBtn = document.querySelector('.connect-cta');
-      if (ctaBtn) {
-        ctaBtn.addEventListener('mouseenter', () => {
-          gsap.to(ctaBtn.querySelector('.cta-circle'), {
-            x: 5,
-            duration: 0.4,
-            ease: 'power2.out',
-            backgroundColor: 'rgba(255, 255, 255, 0.3)'
-          });
-        });
-        
-        ctaBtn.addEventListener('mouseleave', () => {
-          gsap.to(ctaBtn.querySelector('.cta-circle'), {
-            x: 0,
-            duration: 0.4,
-            ease: 'power2.out',
-            backgroundColor: 'rgba(255, 255, 255, 0.2)'
-          });
-        });
-      }
+      });
     };
 
     UI.initMagneticElements = () => {

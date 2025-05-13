@@ -958,7 +958,7 @@ button {
   z-index: 2;
 }
 
-.scroll-indicator {
+.intro-section .scroll-indicator {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -966,15 +966,11 @@ button {
   opacity: 1;
 }
 
-.scroll-line {
-  width: 1px;
-  height: 60px;
+.intro-section .scroll-line {
   background-color: var(--color-text);
-  position: relative;
-  overflow: hidden;
 }
 
-.scroll-line::after {
+.intro-section .scroll-line::after {
   content: '';
   position: absolute;
   top: 0;
@@ -983,15 +979,6 @@ button {
   height: 100%;
   background-color: var(--color-accent);
   animation: scrollIndicator 2s var(--easing-standard) infinite;
-}
-
-@keyframes scrollIndicator {
-  0%, 100% {
-    transform: translateY(-100%);
-  }
-  50% {
-    transform: translateY(100%);
-  }
 }
 
 .scroll-text {
