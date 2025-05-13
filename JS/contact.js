@@ -433,49 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       });
       
-      // Анимация карты
-      ScrollTrigger.create({
-        trigger: '.map-visual',
-        start: "top 85%",
-        once: true,
-        onEnter: () => {
-          gsap.to('.map-frame-wrapper', {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: 'power2.out'
-          });
-          
-          // Анимация границ карты последовательно
-          gsap.to('.map-border-top', {
-            scaleX: 1,
-            duration: 0.8,
-            ease: 'power2.out'
-          });
-          
-          gsap.to('.map-border-right', {
-            scaleY: 1,
-            duration: 0.8,
-            delay: 0.2,
-            ease: 'power2.out'
-          });
-          
-          gsap.to('.map-border-bottom', {
-            scaleX: 1,
-            duration: 0.8,
-            delay: 0.4,
-            ease: 'power2.out'
-          });
-          
-          gsap.to('.map-border-left', {
-            scaleY: 1,
-            duration: 0.8,
-            delay: 0.6,
-            ease: 'power2.out'
-          });
-        }
-      });
-      
       // Анимация футера
       ScrollTrigger.create({
         trigger: '.site-footer',

@@ -1182,9 +1182,6 @@ section {
   position: relative;
   width: 100%;
   aspect-ratio: 4/3;
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 1s ease, transform 1.2s var(--easing-entrance);
 }
 
 .map-frame {
@@ -1196,12 +1193,6 @@ section {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-md);
-  transition: transform 0.4s var(--easing-smooth), box-shadow 0.4s var(--easing-smooth);
-}
-
-.map-frame-wrapper:hover .map-frame {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
 }
 
 #yandex-map {
@@ -1223,58 +1214,13 @@ section {
   z-index: 10;
 }
 
-.map-border-top,
-.map-border-right,
-.map-border-bottom,
-.map-border-left {
+.map-background {
   position: absolute;
-  background-color: var(--color-accent);
-  z-index: 5;
-  opacity: 0.7;
-  transform: scale(0);
-  transition: transform 0.8s var(--easing-entrance);
-}
-
-.map-border-top, 
-.map-border-bottom {
-  height: 1px;
+  top: 0;
+  left: 0;
   width: 100%;
-  transform-origin: center;
-}
-
-.map-border-right, 
-.map-border-left {
-  width: 1px;
   height: 100%;
-  transform-origin: center;
-}
-
-.map-border-top {
-  top: -5px;
-  left: 0;
-  transform: scaleX(0);
-  transition-delay: 0.3s;
-}
-
-.map-border-right {
-  top: 0;
-  right: -5px;
-  transform: scaleY(0);
-  transition-delay: 0.5s;
-}
-
-.map-border-bottom {
-  bottom: -5px;
-  left: 0;
-  transform: scaleX(0);
-  transition-delay: 0.7s;
-}
-
-.map-border-left {
-  top: 0;
-  left: -5px;
-  transform: scaleY(0);
-  transition-delay: 0.9s;
+  z-index: 0;
 }
 
 .btn-route {
@@ -1291,9 +1237,6 @@ section {
   position: relative;
   overflow: hidden;
   transition: transform 0.4s var(--easing-smooth), background-color 0.4s var(--easing-smooth);
-  opacity: 0;
-  transform: translateY(20px);
-  transition-delay: 0.4s;
   z-index: 1;
 }
 
@@ -1332,15 +1275,6 @@ section {
 
 .btn-route:hover .btn-icon {
   transform: translateX(5px);
-}
-
-.map-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
 }
 
 .connect-section {
