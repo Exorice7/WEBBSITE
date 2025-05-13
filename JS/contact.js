@@ -53,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
       gsap.set('.hero-section', { opacity: 0 });
       gsap.set('.hero-title .char', { opacity: 0, y: 40 });
       gsap.set('.hero-subtitle .char', { opacity: 0, y: 20 });
+      gsap.set('.hero-contacts', { opacity: 0, y: 20 });
+      gsap.set('.hero-cta', { opacity: 0, y: 20 });
       gsap.set('.scroll-indicator', { opacity: 0, y: 20 });
       gsap.set('.image-mask', { opacity: 0, y: 40, scale: 0.95 });
       
@@ -303,6 +305,24 @@ document.addEventListener('DOMContentLoaded', () => {
         y: 0,
         stagger: 0.003,
         duration: 0.3,
+        ease: 'power1.out'
+      });
+      
+      // Контактная информация
+      gsap.to('.hero-contacts', {
+        opacity: 1,
+        y: 0,
+        duration: 0.3,
+        delay: 0.1,
+        ease: 'power1.out'
+      });
+      
+      // CTA кнопка
+      gsap.to('.hero-cta', {
+        opacity: 1,
+        y: 0,
+        duration: 0.3,
+        delay: 0.2,
         ease: 'power1.out'
       });
       
