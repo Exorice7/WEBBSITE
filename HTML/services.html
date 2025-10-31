@@ -12,13 +12,19 @@
   <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollToPlugin.min.js"></script>
   <script src="https://unpkg.com/split-type"></script>
+  <script src="https://unpkg.com/@barba/core@2.9.7/dist/barba.umd.js"></script>
   <link rel="stylesheet" href="../CSS/services.css">
+  <link rel="prefetch" href="contact.html">
 </head>
 <body>
   <div class="cursor"></div>
   <div class="cursor-follower"></div>
   
   <canvas id="particles-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; opacity: 0.4;"></canvas>
+
+  <div class="page-transition">
+    <div class="transition-overlay"></div>
+  </div>
 
   <div class="preloader">
     <div class="preloader-content">
@@ -93,7 +99,8 @@
     </div>
   </div>
 
-  <main class="main-content">
+  <main class="main-content" data-barba="wrapper">
+    <div data-barba="container" data-barba-namespace="services">
     <section class="hero-section">
       <div class="hero-container">
         <div class="hero-content">
@@ -390,6 +397,7 @@
         <div class="grain-overlay"></div>
       </div>
     </section>
+    </div>
   </main>
 
   <footer class="site-footer">
@@ -448,6 +456,7 @@
     </div>
   </footer>
 
+  <script src="../JS/transitions.js"></script>
   <script src="../JS/services.js"></script>
 </body>
 </html>

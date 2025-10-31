@@ -100,16 +100,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
       
-      // Последовательно анимируем элементы прелоадера
+      // Последовательно анимируем элементы прелоадера (быстрая версия)
       preloaderTimeline
         // Анимация появления логотипа с 3D эффектом
         .to(preloaderLogo.querySelectorAll('.char'), {
           opacity: 1,
           y: 0,
           rotateX: 0,
-          duration: 1.2,
+          duration: 0.6,
           stagger: {
-            each: 0.05,
+            each: 0.02,
             from: "center"
           },
           ease: "expo.out"
@@ -120,25 +120,25 @@ document.addEventListener('DOMContentLoaded', () => {
           y: 0,
           rotateX: 0,
           filter: 'blur(0px)',
-          duration: 1,
-          stagger: 0.08,
+          duration: 0.5,
+          stagger: 0.03,
           ease: "power4.out"
-        }, "-=0.6")
+        }, "-=0.4")
         // Анимация появления индикатора прогресса
         .to(preloaderProgress, {
           opacity: 1,
           scaleX: 1,
-          duration: 0.8,
+          duration: 0.4,
           ease: "power3.out"
-        }, "-=0.5")
+        }, "-=0.3")
         // Анимация заполнения индикатора прогресса с эффектом liquid
         .to(preloaderBar, {
           scaleX: 1,
-          duration: 2,
+          duration: 0.8,
           ease: "power2.inOut"
-        }, "-=0.4")
+        }, "-=0.2")
         // Небольшая пауза для лучшего восприятия
-        .to({}, { duration: 0.5 });
+        .to({}, { duration: 0.2 });
       
       // Функция перехода от прелоадера к основному контенту
       const transitionToMainContent = () => {
@@ -1019,6 +1019,71 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
 
+    // Система плавных переходов между страницами
+    const PageTransition = {
+      isTransitioning: false,
+      
+      init() {
+        this.createOverlay();
+        this.bindLinks();
+      },
+      
+      createOverlay() {
+        const overlay = document.createElement('div');
+        overlay.className = 'page-transition-overlay';
+        overlay.innerHTML = `
+          <div class="transition-content">
+            <div class="transition-logo">ИП ПРЫТКОВ М.А.</div>
+          </div>
+        `;
+        document.body.appendChild(overlay);
+      },
+      
+      bindLinks() {
+        document.addEventListener('click', (e) => {
+          const link = e.target.closest('a');
+          if (!link) return;
+          
+          const href = link.getAttribute('href');
+          if (!href || href.startsWith('#') || href.startsWith('tel:') || href.startsWith('mailto:') || link.target === '_blank') return;
+          
+          // Проверяем, что это внутренняя ссылка на HTML страницу
+          if (href.endsWith('.html') || href === 'index.html') {
+            e.preventDefault();
+            this.navigateTo(href);
+          }
+        });
+      },
+      
+      async navigateTo(url) {
+        if (this.isTransitioning) return;
+        this.isTransitioning = true;
+        
+        const overlay = document.querySelector('.page-transition-overlay');
+        
+        // Анимация выхода
+        gsap.to(overlay, {
+          clipPath: 'circle(150% at 50% 50%)',
+          duration: 0.8,
+          ease: 'expo.inOut',
+          onComplete: () => {
+            window.location.href = url;
+          }
+        });
+        
+        gsap.to('.transition-logo', {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          delay: 0.2,
+          ease: 'expo.out'
+        });
+      }
+    };
+    
+    // Инициализируем систему переходов
+    PageTransition.init();
+    
     // Инициализируем страницу
     initPage();
   });
