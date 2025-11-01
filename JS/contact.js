@@ -89,7 +89,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       
       // Инициализируем базовые интерактивные элементы до анимаций
-      UI.initCursor();
       UI.initParallaxEffects();
       
       // Создаём новую улучшенную анимацию прелоадера
@@ -651,84 +650,6 @@ document.addEventListener('DOMContentLoaded', () => {
           end: '+=300',
           scrub: 1
         }
-      });
-    };
-    
-    // UI компоненты
-    UI.initCursor = () => {
-      // Пропускаем на мобильных устройствах
-      if (window.innerWidth <= 768) return;
-      
-      const cursor = document.querySelector('.cursor');
-      const cursorFollower = document.querySelector('.cursor-follower');
-      
-      let mouseX = 0, mouseY = 0;
-      let cursorX = 0, cursorY = 0;
-      let followerX = 0, followerY = 0;
-      
-      // Плавное следование курсора
-      const animateCursor = () => {
-        const distX = mouseX - cursorX;
-        const distY = mouseY - cursorY;
-        
-        cursorX += distX * 0.3;
-        cursorY += distY * 0.3;
-        
-        followerX += (mouseX - followerX) * 0.1;
-        followerY += (mouseY - followerY) * 0.1;
-        
-        cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
-        cursorFollower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0)`;
-        
-        requestAnimationFrame(animateCursor);
-      };
-      
-      animateCursor();
-      
-      // Обновление позиции курсора
-      document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-      });
-      
-      // Обработка наведения на ссылки и кнопки
-      const handleLinkHover = (e) => {
-        cursor.classList.add('cursor-link');
-        cursorFollower.classList.add('cursor-active');
-        
-        gsap.to(cursor, {
-          scale: 2,
-          duration: 0.3,
-          ease: 'back.out(2)'
-        });
-      };
-      
-      const handleLinkLeave = (e) => {
-        cursor.classList.remove('cursor-link');
-        cursorFollower.classList.remove('cursor-active');
-        
-        gsap.to(cursor, {
-          scale: 1,
-          duration: 0.3,
-          ease: 'power2.out'
-        });
-      };
-      
-      // Слушатели событий
-      document.querySelectorAll('a, button, .magnetic-element').forEach(el => {
-        el.addEventListener('mouseenter', handleLinkHover);
-        el.addEventListener('mouseleave', handleLinkLeave);
-      });
-      
-      // Клик эффект
-      document.addEventListener('mousedown', () => {
-        gsap.to(cursor, { scale: 0.5, duration: 0.2 });
-        gsap.to(cursorFollower, { scale: 0.8, duration: 0.2 });
-      });
-      
-      document.addEventListener('mouseup', () => {
-        gsap.to(cursor, { scale: 1, duration: 0.2 });
-        gsap.to(cursorFollower, { scale: 1, duration: 0.2 });
       });
     };
     

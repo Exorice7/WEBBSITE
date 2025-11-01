@@ -69,7 +69,6 @@ body {
   transition: opacity 0.8s var(--easing-standard);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: none;
 }
 
 img {
@@ -81,7 +80,6 @@ img {
 a {
   color: inherit;
   text-decoration: none;
-  cursor: none;
 }
 
 ul, ol {
@@ -93,63 +91,8 @@ input, button, textarea, select {
   border: none;
   background: none;
   outline: none;
-  cursor: none;
 }
 
-button {
-  cursor: none;
-}
-
-.cursor {
-  position: fixed;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: var(--color-accent);
-  pointer-events: none;
-  z-index: 10000;
-  mix-blend-mode: difference;
-  transform: translate3d(-50%, -50%, 0);
-  will-change: transform;
-  transition: background-color 0.3s;
-}
-
-.cursor-follower {
-  position: fixed;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid var(--color-accent);
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0.6;
-  transform: translate3d(-50%, -50%, 0) scale(1);
-  transition: opacity 0.4s, border-width 0.3s;
-  will-change: transform;
-  backdrop-filter: blur(2px);
-}
-
-.cursor-active {
-  transform: translate3d(-50%, -50%, 0) scale(1.8);
-  opacity: 0.3;
-  border-width: 3px;
-}
-
-.cursor-link {
-  background-color: var(--color-white);
-  box-shadow: 0 0 20px rgba(144, 108, 70, 0.5);
-}
-
-@media (max-width: 768px) {
-  .cursor,
-  .cursor-follower {
-    display: none;
-  }
-  
-  body, a, button, input, textarea, select {
-    cursor: auto;
-  }
-}
 
 .preloader {
   position: fixed;
@@ -565,7 +508,6 @@ button {
   justify-content: space-between;
   width: 30px;
   height: 20px;
-  cursor: none;
   z-index: 9999;
 }
 
@@ -2141,11 +2083,6 @@ section {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
-  }
-  
-  .cursor,
-  .cursor-follower {
-    display: none;
   }
 }
 
