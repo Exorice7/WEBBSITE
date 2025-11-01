@@ -1,132 +1,393 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ИП Прытков М.А. - Главная</title>
-    <link rel="stylesheet" href="../css/index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ИП Прытков М.А. - Агроинновации из сердца КБР</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/gsap@3.12.2/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/gsap@3.12.2/dist/ScrollToPlugin.min.js"></script>
+  <script src="https://unpkg.com/split-type"></script>
+  <link rel="stylesheet" href="../CSS/index.css">
+  <link rel="prefetch" href="about.html">
 </head>
 <body>
-    <div class="preloader">Слоган...</div>
-    <header>
-        <div class="logo">ИП Прытков Михаил Алексеевич</div>
-        <button class="burger-menu" aria-label="Toggle navigation" aria-expanded="false">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <nav>
-            <ul>
-                <li><a href="index.html" class="active">Главная</a></li>
-                <li><a href="about.html">О нас</a></li>
-                <li><a href="products.html">Продукция</a></li>
-                <li><a href="services.html">Услуги</a></li>
-                <li><a href="tech.html">Технологии</a></li>
-                <li><a href="partners.html">Партнерство</a></li>
-                <li><a href="contact.html">Контакты</a></li>
+  <canvas id="particles-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; opacity: 0.4;"></canvas>
+
+  <div class="page-transition">
+    <div class="transition-overlay"></div>
+  </div>
+
+  <div class="preloader">
+    <div class="preloader-content">
+      <div class="logo-preloader">ИП ПРЫТКОВ М.А.</div>
+      <div class="preloader-quote">
+        <p>«Нам доверяют самое ценное — <br>убирать свой урожай»</p>
+      </div>
+      <div class="preloader-progress">
+        <span class="preloader-bar"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="noise-filter"></div>
+  
+  <div class="fixed-elements">
+    <div class="scroll-progress">
+      <div class="scroll-bar"></div>
+    </div>
+  </div>
+
+  <header class="site-header">
+    <div class="header-container">
+      <div class="header-left">
+        <div class="header-logo">
+          <a href="index.html" class="magnetic-element">
+            <span class="logo-text">ИП ПРЫТКОВ М.А.</span>
+            <span class="logo-accent"></span>
+          </a>
+        </div>
+      </div>
+      <div class="header-center">
+        <div class="header-nav">
+          <nav class="main-nav">
+            <ul class="nav-links">
+              <li><a href="index.html" class="nav-link active magnetic-element" data-nav-id="01"><span class="nav-dot"></span>Главная</a></li>
+              <li><a href="about.html" class="nav-link magnetic-element" data-nav-id="02"><span class="nav-dot"></span>О нас</a></li>
+              <li><a href="products.html" class="nav-link magnetic-element" data-nav-id="03"><span class="nav-dot"></span>Продукция</a></li>
+              <li><a href="services.html" class="nav-link magnetic-element" data-nav-id="04"><span class="nav-dot"></span>Услуги</a></li>
+              <li><a href="tech.html" class="nav-link magnetic-element" data-nav-id="05"><span class="nav-dot"></span>Технологии</a></li>
+              <li><a href="partners.html" class="nav-link magnetic-element" data-nav-id="06"><span class="nav-dot"></span>Партнерство</a></li>
+              <li><a href="contact.html" class="nav-link magnetic-element" data-nav-id="07"><span class="nav-dot"></span>Контакты</a></li>
             </ul>
-        </nav>
-        <div class="burger-menu">☰</div>
-    </header>
+          </nav>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="menu-toggle magnetic-element">
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+        </div>
+      </div>
+    </div>
+    <div class="header-backdrop"></div>
+  </header>
 
-    <section class="hero">
-        <div class="hero-background-placeholder"></div>
+  <div class="mobile-menu">
+    <div class="menu-background"></div>
+    <div class="menu-wrapper">
+      <nav>
+        <ul class="mobile-nav-links">
+          <!-- Мобильное меню будет заполняться на основе основного меню через JS -->
+        </ul>
+      </nav>
+      <div class="menu-footer">
+        <div class="menu-contact">
+          <a href="tel:+79286928744">+7 928 692-87-44</a>
+          <a href="mailto:prytkov-mihail@mail.ru">prytkov-mihail@mail.ru</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content" data-barba="wrapper">
+    <div data-barba="container" data-barba-namespace="home">
+    <section class="hero-section">
+      <div class="hero-container">
         <div class="hero-content">
-            <h1>ИП Глава Прытков М.А.: Агроинновации и Надежность из Сердца КБР</h1>
-            <p>Ведущее сельскохозяйственное предприятие из Прохладненского района Кабардино-Балкарии. Специализируемся на элитном семеноводстве, предоставляем услуги по уборке урожая по всей России с использованием новейшей техники и развиваем уникальный для региона проект по выращиванию миндаля.</p>
-
+          <h1 class="hero-title split-text">Агроинновации и Надежность из Сердца КБР</h1>
+          <p class="hero-subtitle split-text">Ведущее сельскохозяйственное предприятие из Прохладненского района Кабардино-Балкарии. Специализируемся на элитном семеноводстве, предоставляем услуги по уборке урожая по всей России с использованием новейшей техники и развиваем уникальный для региона проект по выращиванию миндаля.</p>
+          
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number" data-number="20">0</div>
+              <div class="stat-label">Лет опыта</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" data-number="13">0</div>
+              <div class="stat-label">Комбайнов</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number" data-number="300">0</div>
+              <div class="stat-label">Га орошения</div>
+            </div>
+          </div>
+          
+          <div class="hero-cta">
+            <a href="about.html" class="connect-cta magnetic-element">
+              <span class="cta-text">Узнать больше</span>
+              <div class="cta-circle">
+                <span class="cta-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+              </div>
+            </a>
+          </div>
+          
+          <div class="scroll-indicator">
+            <div class="scroll-line">
+              <span class="scroll-dot"></span>
+            </div>
+          </div>
         </div>
+        
+        <div class="hero-visual">
+          <div class="image-mask">
+            <div class="image-wrapper">
+              <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzMjM4NDZ8MHwxfHNlYXJjaHwxfHx3aGVhdCUyMGZpZWxkfGVufDB8fHx8MTY5NDcyNjU1OXww&ixlib=rb-4.0.3&q=80&w=1080" alt="Поле золотой пшеницы">
+            </div>
+            <svg class="image-parallax-layer" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <path d="M0,0 L100,0 L100,100 L0,100 Z" vector-effect="non-scaling-stroke" />
+            </svg>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-background">
+        <div class="grain-overlay"></div>
+      </div>
     </section>
 
-    <section class="advantages">
-        <h2>Наши Преимущества</h2>
+    <section class="advantages-section">
+      <div class="section-wrapper">
+        <div class="section-header">
+          <span class="section-label anim-reveal">Почему мы</span>
+          <h2 class="section-title split-text">Наши Преимущества</h2>
+          <p class="section-description anim-reveal">Более двух десятилетий опыта, передовые технологии и страсть к совершенству делают нас лидерами агробизнеса КБР</p>
+        </div>
+        
         <div class="advantages-grid">
-            <div class="advantage-item">
-                <div class="icon-placeholder"></div>
-                <h3>20+ Лет Опыта</h3>
-                <p>Работаем на земле с 2000 года, глубокое понимание агробизнеса.</p>
+          <div class="advantage-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
-            <div class="advantage-item">
-                <div class="icon-placeholder"></div>
-                <h3>Инновации и Рост</h3>
-                <p>Пионер мелиорации в КБР (300 га + 600 га в плане), первый промышленный миндальный сад (20 га + 75 га в плане).</p>
+            <h3 class="card-title">20+ Лет Опыта</h3>
+            <p class="card-description">Работаем на земле с 2000 года, глубокое понимание агробизнеса и проверенная репутация</p>
+            <div class="card-hover-effect"></div>
+          </div>
+          
+          <div class="advantage-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13 10V3L4 14H11V21L20 10H13Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
-            <div class="advantage-item">
-                <div class="icon-placeholder"></div>
-                <h3>Современная Техника</h3>
-                <p>Парк из 13+ современных комбайнов CLAAS/NH (2020-23), европейская линия подработки семян (50 т/ч).</p>
+            <h3 class="card-title">Инновации и Рост</h3>
+            <p class="card-description">Пионер мелиорации в КБР (300 га + 600 га в плане), первый промышленный миндальный сад (20 га + 75 га в плане)</p>
+            <div class="card-hover-effect"></div>
+          </div>
+          
+          <div class="advantage-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 3H15M9 3V4M9 3L6 7M15 3V4M15 3L18 7M18 7L21 9V13M18 7H6M6 7L3 9V13M21 13V17C21 18.1046 20.1046 19 19 19H17M21 13H3M3 13V17C3 18.1046 3.89543 19 5 19H7M7 19H17M7 19V21M17 19V21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
-            <div class="advantage-item">
-                <div class="icon-placeholder"></div>
-                <h3>Элитные Семена</h3>
-                <p>Производим исключительно элитные и репродукционные семена пшеницы, кукурузы, подсолнечника, ячменя.</p>
+            <h3 class="card-title">Современная Техника</h3>
+            <p class="card-description">Парк из 13+ современных комбайнов CLAAS/NH (2020-23), европейская линия подработки семян (50 т/ч)</p>
+            <div class="card-hover-effect"></div>
+          </div>
+          
+          <div class="advantage-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3C7.58172 3 4 6.58172 4 11C4 13.5 6 17 12 21C18 17 20 13.5 20 11C20 6.58172 16.4183 3 12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 11C13.1046 11 14 10.1046 14 9C14 7.89543 13.1046 7 12 7C10.8954 7 10 7.89543 10 9C10 10.1046 10.8954 11 12 11Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
-            <div class="advantage-item">
-                <div class="icon-placeholder"></div>
-                <h3>Надежные Услуги</h3>
-                <p>Профессиональная уборка всех культур от Сев. Кавказа до Центра РФ. Нам доверяют.</p>
+            <h3 class="card-title">Элитные Семена</h3>
+            <p class="card-description">Производим исключительно элитные и репродукционные семена пшеницы, кукурузы, подсолнечника, ячменя</p>
+            <div class="card-hover-effect"></div>
+          </div>
+          
+          <div class="advantage-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
-            <div class="advantage-item">
-                <div class="icon-placeholder"></div>
-                <h3>Гарантия Качества</h3>
-                <p>Основательный подход М.А. Прыткова – гарантия результата и надежности.</p>
+            <h3 class="card-title">Надежные Услуги</h3>
+            <p class="card-description">Профессиональная уборка всех культур от Сев. Кавказа до Центра РФ. Нам доверяют</p>
+            <div class="card-hover-effect"></div>
+          </div>
+          
+          <div class="advantage-card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 11.5L11 13.5L15 9.5M12 3L13.9101 4.87147L16.5 4.20577L17.2184 6.78155L19.7942 7.5L19.1285 10.0899L21 12L19.1285 13.9101L19.7942 16.5L17.2184 17.2184L16.5 19.7942L13.9101 19.1285L12 21L10.0899 19.1285L7.5 19.7942L6.78155 17.2184L4.20577 16.5L4.87147 13.9101L3 12L4.87147 10.0899L4.20577 7.5L6.78155 6.78155L7.5 4.20577L10.0899 4.87147L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
             </div>
+            <h3 class="card-title">Гарантия Качества</h3>
+            <p class="card-description">Основательный подход М.А. Прыткова – гарантия результата и надежности</p>
+            <div class="card-hover-effect"></div>
+          </div>
         </div>
+      </div>
+      
+      <div class="section-background">
+        <div class="grain-overlay"></div>
+      </div>
     </section>
 
-    <main>
-        <section class="directions">
-            <h2>Направления Деятельности</h2>
-            <div class="directions-grid">
-                <div class="direction-item">
-                    <h3>Элитные Семена</h3>
-                    <p>[Описание Placeholder]</p>
-                    <button onclick="location.href='products.html#elite-seeds'">Подробнее о Семенах</button>
-                </div>
-                <div class="direction-item">
-                    <h3>Услуги по Уборке</h3>
-                    <p>[Описание Placeholder]</p>
-                    <button onclick="location.href='services.html'">Заказать Услуги</button>
-                </div>
-                <div class="direction-item">
-                    <h3>Инновационный Миндаль</h3>
-                    <p>[Описание Placeholder]</p>
-                    <button onclick="location.href='products.html#almond-project'">Узнать о Проекте</button>
-                </div>
-            </div>
-        </section>
-
-        <section class="trust">
-            <h2>Нам Доверяют</h2>
-            <p>Среди наших партнеров – ведущие агропредприятия России.</p>
-
-            <div class="partners-logos-placeholder"></div>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-nav">
-                <h4>Навигация</h4>
-                <ul>
-                    <li><a href="index.html">Главная</a></li>
-                    <li><a href="about.html">О Нас</a></li>
-                    <li><a href="products.html">Продукция</a></li>
-                    <li><a href="services.html">Услуги по Уборке</a></li>
-                    <li><a href="tech.html">Технологии</a></li>
-                    <li><a href="partners.html">Партнерство</a></li>
-                    <li><a href="contact.html">Контакты</a></li>
-                </ul>
-            </div>
-            <div class="footer-info">
-                <p> 2025 ИП Прытков М.А. Все права защищены.</p>
-                <a href="#" class="privacy-policy">Политика конфиденциальности</a>
-            </div>
-
+    <section class="directions-section">
+      <div class="section-wrapper">
+        <div class="section-header">
+          <span class="section-label anim-reveal">Что мы делаем</span>
+          <h2 class="section-title split-text">Направления Деятельности</h2>
         </div>
-    </footer>
+        
+        <div class="directions-grid">
+          <div class="direction-card">
+            <div class="direction-image">
+              <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" alt="Элитные семена">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="direction-content">
+              <h3 class="direction-title">Элитные Семена</h3>
+              <p class="direction-description">Высококачественное семеноводство пшеницы, кукурузы, подсолнечника и ячменя. Собственная современная линия подработки семян мощностью 50 т/ч гарантирует безупречное качество.</p>
+              <a href="products.html#elite-seeds" class="direction-link magnetic-element">
+                <span>Подробнее о семенах</span>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          
+          <div class="direction-card">
+            <div class="direction-image">
+              <img src="https://images.unsplash.com/photo-1527847263472-aa5338d178b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" alt="Услуги по уборке">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="direction-content">
+              <h3 class="direction-title">Услуги по Уборке</h3>
+              <p class="direction-description">Профессиональная уборка урожая по всей России с современным парком техники CLAAS и New Holland 2020-2023 годов. Опыт, скорость и качество работы.</p>
+              <a href="services.html" class="direction-link magnetic-element">
+                <span>Заказать услуги</span>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+          
+          <div class="direction-card">
+            <div class="direction-image">
+              <img src="https://images.unsplash.com/photo-1608797178974-15b35a64ede9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=800" alt="Миндальный сад">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="direction-content">
+              <h3 class="direction-title">Инновационный Миндаль</h3>
+              <p class="direction-description">Уникальный для КБР проект промышленного выращивания миндаля. 20 га действующих садов + 75 га в планах. Инвестиция в будущее региона.</p>
+              <a href="products.html#almond-project" class="direction-link magnetic-element">
+                <span>Узнать о проекте</span>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section-background">
+        <div class="grain-overlay"></div>
+      </div>
+    </section>
 
-    <script src="../js/index.js"></script>
+    <section class="trust-section">
+      <div class="section-wrapper">
+        <div class="trust-content">
+          <span class="section-label anim-reveal">Партнеры</span>
+          <h2 class="section-title split-text">Нам Доверяют</h2>
+          <p class="section-description anim-reveal">Среди наших партнеров – ведущие агропредприятия России. Мы строим долгосрочные отношения, основанные на доверии и качестве работы.</p>
+          
+          <a href="partners.html" class="connect-cta magnetic-element">
+            <span class="cta-text">Стать партнером</span>
+            <div class="cta-circle">
+              <span class="cta-arrow">
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+      
+      <div class="section-background">
+        <div class="grain-overlay"></div>
+      </div>
+    </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-wrapper">
+      <div class="footer-content">
+        <div class="footer-branding">
+          <div class="footer-logo">
+            <span>ИП ПРЫТКОВ М.А.</span>
+            <div class="logo-accent"></div>
+          </div>
+          <div class="footer-tagline">
+            <p>Качество, проверенное временем</p>
+          </div>
+        </div>
+        
+        <div class="footer-nav">
+          <div class="footer-nav-column">
+            <h3 class="footer-heading">Навигация</h3>
+            <ul class="footer-links">
+              <li><a href="index.html" class="footer-link magnetic-element">Главная</a></li>
+              <li><a href="about.html" class="footer-link magnetic-element">О нас</a></li>
+              <li><a href="products.html" class="footer-link magnetic-element">Продукция</a></li>
+              <li><a href="services.html" class="footer-link magnetic-element">Услуги</a></li>
+            </ul>
+          </div>
+          
+          <div class="footer-nav-column">
+            <h3 class="footer-heading">Информация</h3>
+            <ul class="footer-links">
+              <li><a href="tech.html" class="footer-link magnetic-element">Технологии</a></li>
+              <li><a href="partners.html" class="footer-link magnetic-element">Партнерство</a></li>
+              <li><a href="contact.html" class="footer-link magnetic-element">Контакты</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="footer-contact">
+          <h3 class="footer-heading">Контакты</h3>
+          <ul class="footer-contact-list">
+            <li><a href="tel:+79286928744" class="footer-contact-link magnetic-element">+7 928 692-87-44</a></li>
+            <li><a href="mailto:prytkov-mihail@mail.ru" class="footer-contact-link magnetic-element">prytkov-mihail@mail.ru</a></li>
+            <li class="footer-address">Пролетарское, Прохладненский р-н, КБР</li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="copyright">
+          <p>&copy; 2024 ИП Прытков М.А.</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-bg">
+      <div class="grain-overlay"></div>
+    </div>
+  </footer>
+
+  <script src="../JS/transitions.js"></script>
+  <script src="../JS/index.js"></script>
 </body>
 </html>
